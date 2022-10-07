@@ -12,10 +12,10 @@ import {
 } from "@heroicons/react/outline";
 import { PlusIcon } from "@heroicons/react/solid";
 import { logoutAction } from "../../../redux/slices/users/userSlices";
-
+import logo from '../../../img/logo.png'
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
+  // { name: "Home", href: "/", current: true },
   // { name: "Create", href: "/create-post", current: false },
   { name: "Posts", href: "/posts", current: false },
   { name: "Authors", href: "/users", current: false },
@@ -37,7 +37,7 @@ const AdminNavbar = ({isLogin}) => {
  //logout
  const dispatch = useDispatch();
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-white shadow-md shadow-gray-300 sticky top-0 z-50">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,8 +55,11 @@ const AdminNavbar = ({isLogin}) => {
                   </Disclosure.Button>
                 </div>
                 <div className="flex-shrink-0 flex items-center">
-                  {/* Logo */}
-                  <BookOpenIcon className="h-10 w-10 text-yellow-200" />
+               {/* Logo */}
+               <h1 className="text-black font-mono">DevBlog</h1>
+               <Link to="/">
+                 <img className="w-20 text-black" src={logo} alt={logo} />
+                 </Link>
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map(item => (
@@ -65,8 +68,8 @@ const AdminNavbar = ({isLogin}) => {
                       to={item.href}
                       className={classNames(
                         item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          ? "bg-gray-500 text-white hover:bg-gray-700 shadow-lg shadow-gray-300"
+                          : "bg-gray-400 text-white hover:bg-gray-700 hover:text-white shadow-lg shadow-gray-300",
                         "px-3 py-2 rounded-md text-sm font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}
@@ -82,7 +85,7 @@ const AdminNavbar = ({isLogin}) => {
                   <Link
                     to="/create-post"
                     type="button"
-                    className="relative mr-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
+                    className="relative mr-4 inline-flex items-center px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-gray-400  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
                   >
                     <PlusIcon
                       className="-ml-1 mr-2 h-5 w-5"
@@ -94,7 +97,7 @@ const AdminNavbar = ({isLogin}) => {
                   <button
                   onClick={()=>dispatch(logoutAction())}
                     type="button"
-                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
+                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-gray-400  hover:bg-gray-700focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
                   >
                     <LogoutIcon
                       className="-ml-1 mr-2 h-5 w-5"
@@ -111,7 +114,7 @@ const AdminNavbar = ({isLogin}) => {
                     {({ open }) => (
                       <>
                         <div>
-                          <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                          <Menu.Button className="bg-gray-800 ml-5 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
@@ -119,6 +122,9 @@ const AdminNavbar = ({isLogin}) => {
                                alt=""
                             />
                         </Menu.Button>
+                        <div>
+                        <span className="text-gray-700 font-bold">{isLogin?.firstname} {isLogin?.lastname}</span>
+                        </div>
                         </div>
                         <Transition
                           show={open}
@@ -132,7 +138,7 @@ const AdminNavbar = ({isLogin}) => {
                         >
                           <Menu.Items
                             static
-                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg shadow-gray-300 bg-gray-400 py-1  ring-1 ring-black ring-opacity-5 focus:outline-none"
                           >
                             {userNavigation.map(item => (
                               <Menu.Item key={item.name}>
@@ -141,7 +147,7 @@ const AdminNavbar = ({isLogin}) => {
                                     href={item.href}
                                     className={classNames(
                                       active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700"
+                                      "block px-4 py-2 text-sm text-gray-700 "
                                     )}
                                   >
                                     {item.name}
@@ -168,7 +174,7 @@ const AdminNavbar = ({isLogin}) => {
                   className={classNames(
                     item.current
                       ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      : "text-gray-300 hover:bg-gray-800 hover:text-white",
                     "block px-3 py-2 rounded-md text-base font-medium"
                   )}
                   aria-current={item.current ? "page" : undefined}
@@ -178,7 +184,7 @@ const AdminNavbar = ({isLogin}) => {
               ))}
             </div>
             {/* mobile view */}
-            <div className="pt-4 pb-3 border-t border-gray-700">
+            <div className="pt-4 pb-3 border-t border-gray-600">
               <div className="flex items-center px-5 sm:px-6">
                 <div className="flex-shrink-0">
                 <img
@@ -188,11 +194,11 @@ const AdminNavbar = ({isLogin}) => {
                   />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium text-white">
+                  <div className="text-base font-medium text-gray-800">
                     {/* {user.name} */}
                     {isLogin?.firstname} {isLogin?.lastname}
                   </div>
-                  <div className="text-sm font-medium text-gray-400">
+                  <div className="text-sm font-medium text-gray-800">
                     {/* {user.email} */}
                     {isLogin?.email}
                   </div>
@@ -207,7 +213,7 @@ const AdminNavbar = ({isLogin}) => {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-white hover:bg-gray-700"
                   >
                     {item.name}
                   </a>

@@ -31,7 +31,7 @@ const AddComment = ({ postId }) => {
     validationSchema: formSchema,
   });
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center ">
        {appErr || serverErr ? (
                   <p className="mt-2 text-center text-lg text-red-600">
                     {serverErr}... {appErr}

@@ -29,19 +29,19 @@ const UpdatePassword = () => {
   if(isPasswordUpdated) return <Navigate to={`/profile/${userAuth?._id}`}/>
 
   return (
-    <div className="min-h-screen bg-white-700  flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-black-300">
+    <div className="min-h-screen bg-gray-200  flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md ">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-black-300 font-serif">
           Change your password
         </h2>
         <h3 className="text-center pt-2 text-red-500">{serverErr || appErr ? <p>{serverErr} {appErr}</p>:null}</h3>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md shadow-md shadow-gray-400 ">
+        <div className="bg-gray-150 py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={formik.handleSubmit}>
             <div className="flex items-center pl-6 mb-6 border border-black-50 bg-white rounded-full">
-              <span className="inline-block pr-3 border-r border-gray-50">
+              <span className="inline-block pr-3 border-r border-gray-50  ">
                 <svg
                   className="w-5 h-5"
                   width="20"
@@ -86,7 +86,7 @@ const UpdatePassword = () => {
             </button> ):
              (<button
              type="submit"
-             className="inline-flex bg-black justify-center w-full px-4 py-2 border border-black-300 shadow-sm text-sm font-medium rounded-md text-gray-200  hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+             className="inline-flex bg-black justify-center w-full px-4 py-2 border border-black-300 shadow-sm text-sm font-medium rounded-md text-gray-200  hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
            >
              <span>Update Password</span>
            </button>)}

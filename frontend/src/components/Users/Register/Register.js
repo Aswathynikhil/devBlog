@@ -2,10 +2,11 @@ import React from "react";
 import {useFormik} from "formik"
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 
 import {toast} from 'react-toastify'
 import { registerUserAction } from "../../../redux/slices/users/userSlices";
+import register from '../../../img/register.png'
 
 // Form Schema
 
@@ -63,29 +64,45 @@ if(registered){
   }
 }
   return (
-    <section className="relative py-20 2xl:py-40 bg-white-800 overflow-hidden">
-      <div className="relative container px-4 mx-auto">
-        <div className="max-w-5xl mx-auto">
+    <section className=" py-20 2xl:py-40 bg-gray-200 overflow-hidden ">
+      <div className=" container px-4 mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap items-center -mx-4">
-            <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
+            <div className="w-full lg:w-1/2 px-2 mb-16 lg:mb-0">
               <div className="max-w-md">
                 {/* <span className="text-lg text-blue-400 font-bold">
                   Register Account
                 </span> */}
 
-                <h2 className=" mb-12 text-5xl font-bold font-heading text-black">
+                {/* <h2 className=" mb-12 text-5xl font-bold font-heading text-black">
                   Create an account and start pending down your ideas
-                </h2>
+                </h2> */}
+{/* 
+           <h1 className=' max-w-4xl mb-12 text-2xl 2xl:text-5xl text-gray-700 font-serif font-heading'>
+                <strong>
+             
+                 <h2 className=" mb-12 text-5xl font-bold font-heading text-black">
+                  Create an account and start pending down your ideas
+                </h2> 
+                </strong>
+               </h1> */}
+                  <div className="w-60 lg:w-1/2 px-5 ml-30 flex mb-10 mx-auto items-center justify-center h-20 w-20">
+         
+         <img className="w-full h-96" src={register} alt={register } />
+          
+       
+       </div>
+
               </div>
             </div>
             <div className="w-full lg:w-1/2 px-4 ">
-            <div className="px-6 lg:px-10 py-12 lg:py-24 bg-white rounded-xl border border-gray-500 drop-shadow-lg">
+            <div className="px-6 lg:px-10 py-12 lg:py-24 bg-gray-200 rounded-xl border border-gray-500 drop-shadow-lg shadow-md shadow-gray-500">
                 <form onSubmit={formik.handleSubmit}>
-                  <h3 className="mb-10 text-2xl text-black font-bold font-heading">
+                  <h3 className="mb-10 text-2xl text-black font-bold font-heading text-center font-serif">
                     Register Account
                     {/* display error message*/}
                     {appErr || serverErr ? (
-                      <div className="text-red-400">
+                      <div className="text-red-500 font-serif mt-3">
                         {serverErr} {appErr}
                       </div>
                     ) : null}
@@ -338,6 +355,14 @@ if(registered){
                 )
               }
                 </form>
+                <div className="mt-5 text-center ">
+                <Link
+                          to="/login"
+                          className="font-medium text-blue-800 hover:text-indigo-500 "
+                        >
+                           Already Registered..?
+                        </Link>
+                </div>
               </div>
             </div>
           </div>

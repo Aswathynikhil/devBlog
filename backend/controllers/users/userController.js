@@ -15,7 +15,7 @@ const blockUser = require("../../utils/isBlock");
 const userRegisterController=expressAsyncHandler(async(req,res)=>{
   console.log(req.body);
   const userExists = await User.findOne({email:req?.body?.email})
-  if(userExists) throw new Error("user already exists")
+  if(userExists) throw new Error("User already exists")
       try{
 
        const user = await User.create({

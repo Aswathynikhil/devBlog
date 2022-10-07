@@ -60,11 +60,11 @@ const {loading,appErr,serverErr,isUpdated}=postUpdate;
   if(isUpdated) return <Navigate to={`/posts`}/>
   return (
     <>
-      <div className="min-h-screen  bg-zinc-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="min-h-screen  bg-gray-200 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-extrabold text-black-700 animate-bounce">
             Are you sure you want to edit {""}
-            <span className="text-black-700">{postDetails?.title}</span>
+            <span className="text-black-700 font-serif">{postDetails?.title}</span>
           </h2>
           {appErr || serverErr ? (
             <h1 className="text-red-400 text-xl text-center">{serverErr}{appErr}</h1>
@@ -72,7 +72,7 @@ const {loading,appErr,serverErr,isUpdated}=postUpdate;
         </div>
 <div className="container">
         <div className="mt-8 xl:mx-auto sm:w-full sm:max-w-96">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg xl:px-10">
+          <div className="bg-gray-100 py-8 px-4 shadow-md shadow-gray-50 sm:rounded-lg xl:px-10">
             <form onSubmit={formik.handleSubmit} className="space-y-6">
               <div>
                 <label

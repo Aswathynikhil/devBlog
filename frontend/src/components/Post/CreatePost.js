@@ -82,14 +82,14 @@ export default function CreatePost() {
 if(isCreated)return <Navigate to='/posts' />
   return (
     <>
-      <div className="container min-h-screen bg-zinc-50 flex flex-col justify-center py-12 sm:px-6 lg:px-2">
+      <div className="container min-h-screen bg-gray-200 flex flex-col justify-center py-12 sm:px-6 lg:px-2">
         <div className="sm:mx-auto sm:w-full sm:max-w-md ">
           <h1 className=" text-center text-3xl font-extrabold text-black-700 animate-bounce">
             What going in Your Mind?...
           </h1>
 
-          <p className="mt-2 text-center text-sm text-gray-600">
-            <p className="font-semibold text-gray-700 hover:text-indigo-500  ">
+          <p className="mt-2 text-center text-sm text-gray-600 shadow-md shadow-gray-50">
+            <p className="font-semibold  font-serif text-gray-700 hover:text-indigo-500  ">
               Share your ideas to the world. Your post must be free from
               profanity
             </p>
@@ -102,14 +102,14 @@ if(isCreated)return <Navigate to='/posts' />
                 ) : null}
         </div>
         <div className="rounded-br-lg shadow-xl">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 ">
+          <div className="bg-gray-100 py-8 px-4 shadow sm:rounded-lg sm:px-10 shadow-md shadow-gray-50">
             <form onSubmit={formik.handleSubmit} className="space-y-6">
 
                 {/* Category input goes here */}
 
               <label
                 htmlFor="category"
-                className="block text-bold font-medium text-black"
+                className="block text-bold font-medium text-black "
               >
                 Select Category
               </label>

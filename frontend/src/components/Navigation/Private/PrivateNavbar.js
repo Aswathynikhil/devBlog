@@ -11,12 +11,12 @@ import {
 } from "@heroicons/react/outline";
 import { PlusIcon, LogoutIcon } from "@heroicons/react/solid";
 import { logoutAction } from "../../../redux/slices/users/userSlices";
-
+import logo from '../../../img/logo.png'
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
+  // { name: "Home", href: "/", current: true },
   // { name: "Create", href: "/create-post", current: false },
-  { name: "Posts", href: "/posts", current: false },
+  // { name: "Posts", href: "/posts", current: false },
   // { name: "Authors", href: "/users", current: false },
 ];
 
@@ -29,13 +29,14 @@ const PrivateNavbar = ({ isLogin }) => {
   const userNavigation = [
     { name: "Your Profile", href: `/profile/${isLogin?._id}` },
     { name: "Change your password", href: "/update-password" },
+    
    
   ];
 //logout
 const dispatch = useDispatch();
 
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-white shadow-md shadow-gray-300 sticky top-0  z-50">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,7 +55,10 @@ const dispatch = useDispatch();
                 </div>
                 <div className="flex-shrink-0 flex items-center">
                   {/* Logo */}
-                  <BookOpenIcon className="h-10 w-10 text-yellow-200" />
+                 <h1 className="text-black font-mono">DevBlog</h1>
+                 <Link to="/">
+                 <img className="w-20 text-black" src={logo} alt={logo} />
+                 </Link>
                 </div>
                 <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
                   {navigation.map(item => (
@@ -63,8 +67,8 @@ const dispatch = useDispatch();
                       to={item.href}
                       className={classNames(
                         item.current
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          ? "bg-gray-500 text-white hover:bg-gray-700 shadow-lg shadow-gray-400"
+                          : "bg-gray-400 text-white hover:bg-gray-700 hover:text-white shadow-lg shadow-gray-400",
                         "px-3 py-2 rounded-md text-sm font-medium"
                       )}
                       aria-current={item.current ? "page" : undefined}
@@ -76,9 +80,26 @@ const dispatch = useDispatch();
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0 ">
+
+                <Link
+                    to="/posts"
+                    className="pr-3  inline-flex items-center  mr-2 px-3 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-gray-400  hover:bg-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-5">
+                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                    </svg>
+
+                    {/* <PlusIcon
+                      className="-ml-1 mr-2 h-5 w-5"
+                      aria-hidden="true"
+                    /> */}
+                    <span>Posts</span>
+                  </Link>
+
+
                   <Link
                     to="/create-post"
-                    className="pr-3  relative inline-flex items-center mr-2 px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
+                    className="pr-3  relative inline-flex items-center mr-2 px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-gray-400  hover:bg-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
                   >
                     <PlusIcon
                       className="-ml-1 mr-2 h-5 w-5"
@@ -87,10 +108,14 @@ const dispatch = useDispatch();
                     <span>New Post</span>
                   </Link>
 
+
+
+
+
                   <button
                   onClick={()=>dispatch(logoutAction())}
                     type="button"
-                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500"
+                    className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-lg shadow-gray-300 text-sm font-medium rounded-md text-white bg-gray-400  hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
                   >
                     <LogoutIcon
                       className="-ml-1 mr-2 h-5 w-5"
@@ -105,7 +130,7 @@ const dispatch = useDispatch();
                     {({ open }) => (
                       <>
                         <div>
-                          <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                          <Menu.Button className="bg-gray-800 ml-4 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                             <span className="sr-only">Open user menu</span>
                             <img
                               className="h-8 w-8 rounded-full"
@@ -113,10 +138,11 @@ const dispatch = useDispatch();
                               alt=""
                             />
                           </Menu.Button>
+                          <div>
+                        <span className="text-gray-700 font-bold">{isLogin?.firstname} {isLogin?.lastname}</span>
                         </div>
-                        <div>
-                        <span className="text-white">{isLogin?.firstname} {isLogin?.lastname}</span>
                         </div>
+                    
                       
                         <Transition
                           show={open}
@@ -130,7 +156,7 @@ const dispatch = useDispatch();
                         >
                           <Menu.Items
                             static
-                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg shadow-gray-400 py-1 bg-gray-300 ring-1 ring-black ring-opacity-5 focus:outline-none"
                           >
                             {userNavigation.map(item => (
                               <Menu.Item key={item.name}>
@@ -149,7 +175,9 @@ const dispatch = useDispatch();
                             ))}
                           </Menu.Items>
                         </Transition>
+                        
                       </>
+                      
                     )}
                   </Menu>
                 </div>
@@ -186,10 +214,10 @@ const dispatch = useDispatch();
                   />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base font-medium text-white">
+                  <div className="text-base font-medium text-gray-800">
                     {isLogin?.firstname} {isLogin?.lastname}
                   </div>
-                  <div className="text-sm font-medium text-gray-400">
+                  <div className="text-sm font-medium text-gray-800">
                     {isLogin?.email}
                   </div>
                 </div>
@@ -203,7 +231,7 @@ const dispatch = useDispatch();
                   <a
                     key={item.name}
                     href={item.href}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-white hover:bg-gray-700"
                   >
                     {item.name}
                   </a>

@@ -15,7 +15,7 @@ const SendEmail = () => {
 
     let location = useLocation(); 
     const {email,id}=location?.state
-   
+    console.log("🚀 ~ file: SendEmail.js ~ line 18 ~ SendEmail ~ location?.state", location?.state)
   //dispath
   const dispatch = useDispatch();
 
@@ -40,9 +40,9 @@ const { mailSent, loading, appErr, serverErr, isMailSent } = sendMail;
 if(isMailSent) return <Navigate to={`/profile/${id}`}/>
 
   return (
-    <div className="min-h-screen bg-white-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-200 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-black-300">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-black-300 font-serif">
           Send Mesage
           {/* Email title */}
           {/* <span className="text-green-300">email title</span> */}
@@ -56,8 +56,8 @@ if(isMailSent) return <Navigate to={`/profile/${id}`}/>
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md ">
+        <div className="bg-gray-100 py-8 px-4 shadow-md shadow-gray-300 sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={formik.handleSubmit}>
             <div>
               <label

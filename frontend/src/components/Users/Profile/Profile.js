@@ -55,7 +55,7 @@ export default function Profile() {
             {profileAppErr} {profileServerErr}
           </h2>
         ) : (
-          <div className="h-screen flex overflow-hidden bg-white">
+          <div className="h-screen flex overflow-hidden bg-gray-200">
             {/* Static sidebar for desktop */}
 
             <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
@@ -84,7 +84,7 @@ export default function Profile() {
                             <div className=" flex flex-col 2xl:block mt-10 min-w-0 flex-1">
                               <h1 className="text-2xl font-bold text-gray-900 ">
                                 {profile?.firstname} {profile?.lastname}
-                                <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 mx-3">
+                                <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-900 text-white mx-3">
                             {profile?.accountType}
                           </span>
                                 {/* Display if verified or not */}
@@ -97,17 +97,17 @@ export default function Profile() {
                              </span>
                           } */}
                                 {profile?.isAdmin ? null : profile?.isAccountVerified ? (
-                                  <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-300 text-black-800 mx-3">
+                                  <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-900 text-white mx-3">
                                     Account Verified
                                   </span>
                                 ) : (
-                                  <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-500 text-green-200 mx-3">
+                                  <span className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-red-900 text-white mx-3">
                                     Unverified Account
                                   </span>
                                 )}
                               </h1>
                               <p className="m-3 font-semibold ml-0">
-                                Date Joined:
+                                 Joined :
                                 <DateFormatter date={profile?.createdAt} />{" "}
                               </p>
                               <p className="text-green-600 mt-2 mb-2">
@@ -120,7 +120,7 @@ export default function Profile() {
                                 <EyeIcon className="h-5 w-5 " />
                                 <div className="pl-2">
                                 <span className="text-indigo-400 cursor-pointer hover:underline">
-                                   Number of viewers{" "}
+                                   Number of views:{" "}
                                   </span>
                                   {profile?.viewedBy?.length}
                                 
@@ -133,10 +133,10 @@ export default function Profile() {
                               {isLoginUser && 
                                <Link
                                to={`/profilephoto-upload/${profile?._id}`}
-                               className="inline-flex justify-center px-4 py-2 border border-gray-500 shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500"
+                               className="inline-flex justify-center px-4 py-2 border border-gray-500 shadow-md shadow-gray-100 text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500"
                              >
                                <UploadIcon
-                                 className="-ml-1 mr-2 h-5 w-5 text-white-400"
+                                 className="-ml-1 mr-2 h-5 w-5 text-white-400 shadow-md shadow-gray-50"
                                  aria-hidden="true"
                                />
                                <span>Upload Photo</span>
@@ -188,10 +188,10 @@ export default function Profile() {
                               {isLoginUser && 
                                    <Link
                                    to={`/update-profile/${profile?._id}`}
-                                   className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                                   className="inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                                  >
                                    <UserIcon
-                                     className="-ml-1 mr-2 h-5 w-5 text-white-400"
+                                     className="-ml-1 mr-2 h-5 w-5 text-white-400 shadow-md shadow-gray-50"
                                      aria-hidden="true"
                                    />
                                    <span>Update Profile</span>
@@ -200,23 +200,23 @@ export default function Profile() {
                            
                               </>
                               {/* Send Mail */}
-
-                              <Link
+                             {userAuth?.isAdmin==true ?
+                              (<Link
                                 to="/send-mail"
                                 state={{
                                   email: profile?.email,
                                   id: profile?.id,
                                 }}
-                                className="inline-flex justify-center bg-indigo-900 px-4 py-2 border border-yellow-700 shadow-sm text-sm font-medium rounded-md text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                                className="inline-flex justify-center bg-gray-400 px-4 py-2 border  shadow-sm text-sm font-medium rounded-md text-white  hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                               >
                                 <MailIcon
-                                  className="-ml-1 mr-2 h-5 w-5 text-gray-200"
+                                  className="-ml-1 mr-2 h-5 w-5 text-gray-200 shadow-md shadow-gray-50"
                                   aria-hidden="true"
                                 />
-                                <span className="text-base mr-2  text-bold text-yellow-500">
+                                <span>
                                   Send Message
                                 </span>
-                              </Link>
+                              </Link>): null}
                             </div>
                           </div>
                         </div>
@@ -235,7 +235,7 @@ export default function Profile() {
                     </div>
                     <div className="flex justify-center place-items-start flex-wrap  md:mb-0">
                       <div className="w-full md:w-1/3 px-4 mb-4 md:mb-0">
-                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2">
+                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 font-serif font-bold text-blue-900">
                           Who viewed my profile : {profile?.viewedBy?.length}
                         </h1>
 
@@ -245,7 +245,7 @@ export default function Profile() {
                             <h1>No Viewers</h1>
                           ) : (
                             profile?.viewedBy?.map((user) => (
-                              <li>
+                              <li key={user?._id}>
                                 <div>
                                   <div className="flex mb-2 items-center space-x-4 lg:space-x-6">
                                     <img
@@ -255,11 +255,11 @@ export default function Profile() {
                                     />
                                     <div className="font-medium text-lg leading-6 space-y-1">
                                    <Link to={`/profile/${user?._id}`}>
-                                   <h3 className="text-black">
+                                   <h3 className="text-black font-serif font-bold">
                                         {user?.firstname} {user?.lastname}
                                     </h3>
                                    </Link>
-                                      <p className="text-indigo-600">
+                                      <p className="text-blue-900">
                                         {user?.accountType}
                                       </p>
                                     </div>
@@ -272,7 +272,7 @@ export default function Profile() {
                       </div>
                       {/* All my Post */}
                       <div className="w-full md:w-2/3 px-4 mb-4 md:mb-0">
-                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2">
+                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 font-serif text-blue-900 font-bold">
                           My Post - {profile?.posts?.length}
                         </h1>
                         {/* Loop here */}
@@ -280,7 +280,7 @@ export default function Profile() {
                           <h1 className="text-center text-xl">No Post Found</h1>
                         ) : (
                           profile?.posts?.map((post) => (
-                            <div className="flex flex-wrap  -mx-3 mt-3  lg:mb-6">
+                            <div key={post?._id} className="flex flex-wrap  -mx-3 mt-3  lg:mb-6">
                               <div className="mb-2   w-full lg:w-1/4 px-3">
                                 <Link to="">
                                   <img
@@ -300,9 +300,9 @@ export default function Profile() {
                                     {post?.title}
                                   </h3>
                                 </Link>
-                                <p className="text-gray-600 truncate">
+                                <div className="text-gray-600 truncate">
                                 <div dangerouslySetInnerHTML={{__html:DOMPurify.sanitize(post?.description)}}></div>
-                                </p>
+                                </div>
 
                                 <Link
                                   className="text-indigo-500 hover:underline"

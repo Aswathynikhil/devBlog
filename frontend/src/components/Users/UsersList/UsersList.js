@@ -17,11 +17,11 @@ const UsersList = () => {
   
   return (
     <>
-      <section class="py-8 bg-white min-h-screen">
+      <section class="py-8 bg-gray-200 min-h-screen ">
         {loading ? (
           <LoadingComponent />
         ) : appErr || serverErr ? (
-          <h3 className="text-red-500 text-center text-lg">
+          <h3 className="text-red-500 text-center text-lg font-serif">
             {appErr} {serverErr}
           </h3>
         ) : usersList?.length <= 0 ? (

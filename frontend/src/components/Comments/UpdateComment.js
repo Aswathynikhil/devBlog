@@ -43,8 +43,8 @@ const {id}=useParams()
   });
   if(isUpdate) return <Navigate to={`/posts`} />
   return (
-    <div className="h-96 flex justify-center items-center">
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex justify-center items-center min-h-screen bg-gray-200">
+    <div className="flex flex-col justify-center items-center w-full">
       <form
         onSubmit={formik.handleSubmit}
         className="mt-1 flex max-w-sm m-auto"
@@ -56,13 +56,13 @@ const {id}=useParams()
           type="text"
           name="text"
           id="text"
-          className="shadow-xl focus:ring-indigo-500  mr-2 focus:border-indigo-500 block w-full p-2 border-2 sm:text-sm border-gray-300 rounded-md"
+          className="shadow-xl w-96 focus:ring-gray-500  mr-2 focus:border-gray-500 block w-500 p-2 border-2 sm:text-sm border-gray-300 rounded-md "
           placeholder="Edit comment"
         />
 
         <button
           type="submit"
-          className="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-bold rounded shadow-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className=" px-2.5 py-1.5 w-40 text-center border border-transparent  font-bold rounded shadow-xl text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 "
         >
           Submit
         </button>

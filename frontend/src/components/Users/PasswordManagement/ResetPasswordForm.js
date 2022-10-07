@@ -30,14 +30,14 @@ const ResetPasswordForm = () => {
   const users = useSelector(state => state?.users);
   const { passwordToken, loading, appErr, serverErr } = users;
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-200 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 font-serif">
             Password Reset Form
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            <a className="font-medium text-indigo-600 hover:text-indigo-500">
+            <a className="font-medium text-gray-600 hover:text-gray-500">
               Reset your password if you have forgotten
             </a>
           </p>
@@ -111,11 +111,11 @@ const ResetPasswordForm = () => {
             ) : (
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
               >
                 <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                   <LockClosedIcon
-                    className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                    className="h-5 w-5 text-white"
                     aria-hidden="true"
                   />
                 </span>
