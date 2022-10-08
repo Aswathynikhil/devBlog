@@ -11,7 +11,7 @@ const emailMsgRoute = require('./route/emailMsg/emailMsgRoute');
 const categoryRoute = require('./route/category/categoryRoute');
 
 //port
-const PORT=process.env.PORT || 3000;
+const PORT=process.env.PORT || 4000;
 app.listen(PORT,console.log(`server is running on port  ${PORT}`));
 //cors
 app.use(cors())

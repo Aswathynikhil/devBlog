@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { loginUserAction } from "../../../redux/slices/users/userSlices";
 import login1 from '../../../img/login1.png'
 import login2 from '../../../img/login2.png'
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 
 //Form schema
 const formSchema = Yup.object({
@@ -17,6 +19,17 @@ const formSchema = Yup.object({
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const store = useSelector((state) => state?.users);
+  const { userAuth, loading, serverErr, appErr } = store;
+  console.log(userAuth);
+
+  const login = useGoogleLogin({
+    onSuccess: (credentialResponse) => console.log(credentialResponse),
+  });
+  const gooleAuth = (userData) => {
+    dispatch(loginUserAction(userData));
+  };
   //formik
   const formik = useFormik({
     initialValues: {
@@ -31,10 +44,9 @@ const Login = () => {
     },
     validationSchema: formSchema,
   });
+
   //redirect
-  const store = useSelector((state) => state?.users);
-  const { userAuth, loading, serverErr, appErr } = store;
-  console.log(userAuth);
+
   if (userAuth) {
     navigate("/posts");
   }
@@ -151,6 +163,33 @@ const Login = () => {
                       </button>
                     )}
                   </form>
+
+
+                  <span className="flex justify-center text-gray-700 font-bold mt-2">
+                    OR
+                  </span>
+                  
+
+                  <div className="flex items-center justify-center w-full shadow-xl  mt-2 py-1.5 font-bold rounded-full transition duration-200 hover:bg-blue-200 text-center ">
+                    <GoogleLogin
+                      onSuccess={(credentialResponse) => {
+                        var decoded = jwt_decode(credentialResponse.credential);
+                        const userData = {
+                          firstName: decoded.given_name,
+                          email: decoded.email,
+                          lastName: decoded.family_name,
+                          password: decoded.sub,
+                        };
+
+                        gooleAuth(userData);
+                      }}
+                      onError={() => {
+                        console.log("Login Failed");
+                      }}
+                    />
+                  </div>
+
+
                   <div className="text-center mt-5">
                     <div className="flex flex-row mt-5">
                       <div className="ml-5 text-mono text-bold text-blue-800">

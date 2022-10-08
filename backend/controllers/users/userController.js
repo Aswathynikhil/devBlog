@@ -285,7 +285,7 @@ const generateVerificationToken = expressAsyncHandler(async (req, res) => {
 		// save user
 		await user.save();
 		//build your message
-		const resetURL = `If you were requested to verify your account, verify now within 10 minutes, otherwise ignore this message <a href="http://localhost:3001/verify-account/${verificationToken}">Click to verify your account</a>`;
+		const resetURL = `If you were requested to verify your account, verify now within 10 minutes, otherwise ignore this message <a href="http://localhost:3000/verify-account/${verificationToken}">Click to verify your account</a>`;
 		let mailOptions = {
 			from: "devblog.info2022@gmail.com",
 		  to: user?.email,
@@ -388,7 +388,7 @@ const forgetPasswordToken = expressAsyncHandler(async (req, res) => {
    // save user
 		await user.save();
 		//build your message
-		const resetURL = `If you were requested to reset your password, reset now within 10 minutes, otherwise ignore this message <a href="http://localhost:3001/reset-password/${token}">Click to Reset</a>`;
+		const resetURL = `If you were requested to reset your password, reset now within 10 minutes, otherwise ignore this message <a href="http://localhost:3000/reset-password/${token}">Click to Reset</a>`;
 		let mailOptions = {
 			from: process.env.EMAIL,
 			to: user?.email,

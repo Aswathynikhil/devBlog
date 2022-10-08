@@ -1,105 +1,113 @@
 import React from "react";
-import {useFormik} from "formik"
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import {Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import { registerUserAction } from "../../../redux/slices/users/userSlices";
-import register from '../../../img/register.png'
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 
 // Form Schema
 
-const formSchema =Yup.object({
-  firstname:Yup.string().required("First name is required"),
-  lastname:Yup.string().required("Last name is required"),
-  email:Yup.string().required("Email is required"),
-  password:Yup.string().required("Password is required"),
+const formSchema = Yup.object({
+  firstname: Yup.string().required("First name is required"),
+  lastname: Yup.string().required("Last name is required"),
+  email: Yup.string().required("Email is required"),
+  password: Yup.string().required("Password is required"),
   confirmpassword: Yup.string().required("Confirm Password is required"),
- 
-})
+});
 
 //-------------------------------
 //Register
 //-------------------------------
 const Register = () => {
-//dispatch
-const dispatch = useDispatch();
-const Navigate = useNavigate();
+  //dispatch
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
 
   //formik
-const formik =useFormik({
-  initialValues:{
-    firstname:"",
-    lastname:"",
-    email:"",
-    password:"",
-    confirmpassword: "",
-  },
- 
-  onSubmit:( values) => {
-    if (values.password !== values.confirmpassword) {
-      //console.log(values.password, values.confirmpassword);
-       toast.error('Passwords are not equal')
-      
-    }
-    else{
-   
-   
-    dispatch(registerUserAction(values));
-    console.log(values);
-    
-    }
-  },
-  validationSchema: formSchema,
-});
-// se
-const storeData = useSelector(store=>store?.users)
-const {loading,appErr,serverErr,registered}= storeData;
-//redirect
-if(registered){
+  const formik = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      password: "",
+      confirmpassword: "",
+    },
+
+    onSubmit: (values) => {
+      if (values.password !== values.confirmpassword) {
+        //console.log(values.password, values.confirmpassword);
+        toast.error("Passwords are not same");
+      } else {
+        dispatch(registerUserAction(values));
+        console.log(values);
+      }
+    },
+    validationSchema: formSchema,
+  });
+  // se
+  const storeData = useSelector((store) => store?.users);
+  const { loading, appErr, serverErr, registered } = storeData;
+
+  const login = useGoogleLogin({
+    onSuccess: (credentialResponse) => console.log(credentialResponse),
+  });
+
+  const gooleAuth = (userData) => {
+    dispatch(registerUserAction(userData));
+  };
+
+  //redirect
   if (registered) {
-    
-    Navigate("/login");
+    if (registered) {
+      Navigate("/login");
+    }
   }
-}
   return (
-    <section className=" py-20 2xl:py-40 bg-gray-200 overflow-hidden ">
+    <section className=" py-20 2xl:py-5 bg-gray-200 overflow-hidden ">
       <div className=" container px-4 mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap items-center -mx-4">
-            <div className="w-full lg:w-1/2 px-2 mb-16 lg:mb-0">
+            <div className="w-full lg:w-1/2 px-2 mb-5 lg:mb-0">
               <div className="max-w-md">
                 {/* <span className="text-lg text-blue-400 font-bold">
                   Register Account
                 </span> */}
-
-                {/* <h2 className=" mb-12 text-5xl font-bold font-heading text-black">
-                  Create an account and start pending down your ideas
+                {/* 
+                <h2 className=" mb-12 text-4xl  font-heading text-black">
+                  Create an account and Join  the DevBlog Community
                 </h2> */}
-{/* 
-           <h1 className=' max-w-4xl mb-12 text-2xl 2xl:text-5xl text-gray-700 font-serif font-heading'>
-                <strong>
-             
-                 <h2 className=" mb-12 text-5xl font-bold font-heading text-black">
-                  Create an account and start pending down your ideas
-                </h2> 
-                </strong>
-               </h1> */}
-                  <div className="w-60 lg:w-1/2 px-5 ml-30 flex mb-10 mx-auto items-center justify-center h-20 w-20">
+
+                <h3 className=" mb-12 text-4xl  font-heading text-black font-mono text-blue-900">
+                  <strong>
+                    <div>Tell Your Knowledge to </div>
+                    <div className="ml-10 text-primary"> the World...</div>
+                    <span className="">
+                      Join the <span className=" text-yellow-500">DevBlog</span>{" "}
+                    </span>
+                    <span className="ml-20">Community</span>
+                  </strong>
+                </h3>
+                <h6 className="font-serif">
+                  Join with us! Register/Login.Write your knowledge and share!!
+                </h6>
+
+                {/* <div className="w-60 lg:w-1/2 px-5 ml-30 flex mb-10 mx-auto items-center justify-center h-20 w-20">
          
-         <img className="w-full h-96" src={register} alt={register } />
+         <img className="w-full" src={register} alt={register } />
           
        
-       </div>
-
+       </div> */}
               </div>
             </div>
             <div className="w-full lg:w-1/2 px-4 ">
-            <div className="px-6 lg:px-10 py-12 lg:py-24 bg-gray-200 rounded-xl border border-gray-500 drop-shadow-lg shadow-md shadow-gray-500">
+              <div className="px-6 lg:px-10 py-12 lg:py-24 bg-gray-200 rounded-xl border border-gray-500 drop-shadow-lg shadow-md shadow-gray-500">
                 <form onSubmit={formik.handleSubmit}>
                   <h3 className="mb-10 text-2xl text-black font-bold font-heading text-center font-serif">
-                    Register Account
+                    Register Your Account
                     {/* display error message*/}
                     {appErr || serverErr ? (
                       <div className="text-red-500 font-serif mt-3">
@@ -107,7 +115,7 @@ if(registered){
                       </div>
                     ) : null}
                   </h3>
-                  
+
                   {/* First name */}
                   <div className="flex items-center pl-6 mb-3 bg-white rounded-full border border-slate-400">
                     <span className="inline-block pr-3 py-2 border-r border-gray-50">
@@ -149,9 +157,9 @@ if(registered){
                       </svg>
                     </span>
                     <input
-                     value={formik.values.firstname}
-                     onChange={formik.handleChange("firstname")}
-                     onBlur={formik.handleBlur("firstname")}
+                      value={formik.values.firstname}
+                      onChange={formik.handleChange("firstname")}
+                      onBlur={formik.handleBlur("firstname")}
                       className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-300 rounded-r-full focus:outline-none"
                       type="firstName"
                       placeholder="First Name"
@@ -159,7 +167,7 @@ if(registered){
                   </div>
                   {/* Err msg*/}
                   <div className="text-red-400 mb-2">
-                     {formik.touched.firstname && formik.errors.firstname} 
+                    {formik.touched.firstname && formik.errors.firstname}
                   </div>
                   {/* Last name */}
                   <div className="flex items-center pl-6 mb-3 bg-white rounded-full border border-slate-400">
@@ -202,9 +210,9 @@ if(registered){
                       </svg>
                     </span>
                     <input
-                    value={formik.values.lastname}
-                    onChange={formik.handleChange("lastname")}
-                    onBlur={formik.handleBlur("lastname")}
+                      value={formik.values.lastname}
+                      onChange={formik.handleChange("lastname")}
+                      onBlur={formik.handleBlur("lastname")}
                       className="w-full pl-4 pr-6 py-4 font-bold placeholder-gray-300 rounded-r-full focus:outline-none"
                       type="lastName"
                       placeholder="Last Name"
@@ -298,7 +306,7 @@ if(registered){
                   </div>
                   {/* confirm password*/}
                   <div className="text-red-400 mb-2">
-                     {formik.touched.password && formik.errors.password}
+                    {formik.touched.password && formik.errors.password}
                   </div>
 
                   <div className="flex items-center pl-6 mb-3 bg-white rounded-full border border-slate-400">
@@ -332,36 +340,63 @@ if(registered){
                   </div>
                   {/* Err msg*/}
                   <div className="text-red-400 mb-2">
-                     {formik.touched.confirmpassword && formik.errors.confirmpassword}
+                    {formik.touched.confirmpassword &&
+                      formik.errors.confirmpassword}
                   </div>
 
                   <div className="inline-flex mb-10"></div>
 
-                 {/*check for loading*/}
-                {loading ?
-                ( <button
-                  disabled
-                  className="py-4 w-full bg-gray-500  text-white font-bold rounded-full transition duration-200"
-                >
-                  Loading please wait...
-                </button>):
-                (
-                  <button
-                  type="submit"
-                  className="py-4 w-full bg-slate-900 hover:bg-black text-white font-bold rounded-full transition duration-200"
-                >
-                  Register
-                </button>
-                )
-              }
+                  {/*check for loading*/}
+                  {loading ? (
+                    <button
+                      disabled
+                      className="py-4 w-full bg-gray-500  text-white font-bold rounded-full transition duration-200"
+                    >
+                      Loading please wait...
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="py-4 w-full bg-slate-900 hover:bg-black text-white font-bold rounded-full transition duration-200"
+                    >
+                      Register
+                    </button>
+                  )}
                 </form>
+
+                <span className="flex justify-center text-gray-700 font-bold mt-2">
+                  OR
+                </span>
+
+                
+                <div className="flex items-center justify-center w-full shadow-xl  mt-2 py-1.5 font-bold rounded-full transition duration-200  text-center">
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+
+                      var decoded = jwt_decode(credentialResponse.credential);
+                      console.log(decoded,"decode..");
+                      const userData = {
+                        firstName: decoded.given_name,
+                        email: decoded.email,
+                        lastName: decoded.family_name,
+                        password: decoded.sub,
+                      };
+
+                      gooleAuth(userData);
+                    }}
+                    onError={() => {
+                      console.log("Login Failed");
+                    }}
+                  />
+                </div>
+
                 <div className="mt-5 text-center ">
-                <Link
-                          to="/login"
-                          className="font-medium text-blue-800 hover:text-indigo-500 "
-                        >
-                           Already Registered..?
-                        </Link>
+                  <Link
+                    to="/login"
+                    className="font-medium text-blue-800 hover:text-indigo-500 "
+                  >
+                    Already Registered..?
+                  </Link>
                 </div>
               </div>
             </div>

@@ -242,6 +242,23 @@ if(isDisLiked){
 }
 
 })
+
+//-------------report---------------
+const reportPostController = expressAsyncHandler(async(req,res) =>{
+  const {postId} = req.body;
+  validateMongodbId(postId);
+
+await Post.findByIdAndUpdate(
+    postId,
+    {
+      $inc: { report: 1 },
+    },
+    {
+      new: true,
+    })
+
+ })
+
 module.exports = {
    createPostController , 
    fetchPostController ,
@@ -249,5 +266,6 @@ module.exports = {
    updatePostController,
    deletePostContoller , 
    toggleAddLikeToPostController,
-   toggleAddDislikeToPostController
+   toggleAddDislikeToPostController,
+   reportPostController
   };

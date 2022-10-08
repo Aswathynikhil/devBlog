@@ -24,12 +24,14 @@ import UsersList from "./components/Users/UsersList/UsersList";
 import UpdatePassword from "./components/Users/PasswordManagement/UpdatePassword";
 import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
 import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswordForm";
+import PageNotFound from "./components/PageNotFound";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 
 function App() {
   return (
-    <div>
-
+    <>
+   
       <Router>
         <Navbar />
         <Routes>
@@ -82,6 +84,8 @@ function App() {
           <Route path="/password-reset-token" element={<ResetPasswordForm/>} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
 
+          <Route path="*" element={<PageNotFound />} />
+
 
           <Route path='/profile/:id' element={
           <UserProtectedRoute>
@@ -115,7 +119,8 @@ function App() {
 
       </Router>
       <ToastContainer toastClassName=" relative flex p-1 min-h-10 rounded-md justify-between overflow-hidden cursor-pointer" />
-    </div>
+      
+    </>
 
   );
 }
