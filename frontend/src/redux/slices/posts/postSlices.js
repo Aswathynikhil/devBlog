@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice ,createAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../../../utils/baseURL";
+import axiosInstance from "../../../utils/api_instance";
 
 
 //redirect
@@ -29,7 +30,7 @@ export const createPostAction = createAsyncThunk('post/create',async(
         formData.append('category',post?.category);
         formData.append('image',post?.image);
 
-        const { data } = await axios.post(`${baseUrl}/api/posts`,formData,config)
+        const { data } = await axiosInstance.post(`/api/posts`,formData,config)
         //dispatch data
             dispatch(resetPost())
         return data;
@@ -59,7 +60,7 @@ export const updatePostAction = createAsyncThunk('post/update',async(
     try {
         // http call
      
-        const { data } = await axios.put(`${baseUrl}/api/posts/${post?.id}`,post,config)
+        const { data } = await axiosInstance.put(`/api/posts/${post?.id}`,post,config)
         //dispatch data
            dispatch(resetPostEdit())
         return data;
@@ -85,7 +86,7 @@ export const updatePostAction = createAsyncThunk('post/update',async(
     try {
         // http call
      
-        const { data } = await axios.delete(`${baseUrl}/api/posts/${postId}`, config)
+        const { data } = await axiosInstance.delete(`/api/posts/${postId}`, config)
         //dispatch data
            dispatch(resetPostDelete())
         return data;
@@ -103,7 +104,7 @@ export const updatePostAction = createAsyncThunk('post/update',async(
         category,{rejectWithValue,getState,dispatch})=>{
       
         try {
-            const { data } = await axios.get(`${baseUrl}/api/posts?category=${category}`) 
+            const { data } = await axiosInstance.get(`/api/posts?category=${category}`) 
             return data;
         } catch (error) {
            if(!error?.response)throw error;
@@ -117,7 +118,7 @@ export const updatePostAction = createAsyncThunk('post/update',async(
    export const fetchSinglePostDetailsAction = createAsyncThunk("post/postDetails",
    async(postId,{rejectWithValue,getState,dispatch})=>{
      try {
-      const { data } = await axios.get(`${baseUrl}/api/posts/${postId}`) 
+      const { data } = await axiosInstance.get(`/api/posts/${postId}`) 
       return data;
      } catch (error) {
       if(!error?.response)throw error;
@@ -139,8 +140,8 @@ export const toggleAddLikesToPostAction = createAsyncThunk(
         },
       };
       try {
-        const { data } = await axios.put(
-          `http://localhost:3000/api/posts/likes`,
+        const { data } = await axiosInstance.put(
+          `/api/posts/likes`,
           { postId },
           config
         );
@@ -169,8 +170,8 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
         },
       };
       try {
-        const { data } = await axios.put(
-          `http://localhost:3000/api/posts/dislikes`,
+        const { data } = await axiosInstance.put(
+          `/api/posts/dislikes`,
           { postId },
           config
         );

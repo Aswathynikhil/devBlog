@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { baseUrl } from "../../../utils/baseURL";
+import axiosInstance from "../../../utils/api_instance";
 
 
 //redirect action
@@ -21,7 +22,7 @@ export const createCommentAction = createAsyncThunk("comment/create",async(comme
     };
     //http call
     try {
-        const { data}= await axios.post(`${baseUrl}/api/comments`,
+        const { data}= await axiosInstance.post(`/api/comments`,
         {
              description:comment?.description,
              postId:comment?.postId,
@@ -56,7 +57,7 @@ export const deleteCommentAction = createAsyncThunk("comment/delete",async(comme
     };
     //http call
     try {
-        const { data}= await axios.delete(`${baseUrl}/api/comments/${commentId}`,
+        const { data}= await axiosInstance.delete(`/api/comments/${commentId}`,
         config
         );
         return data;
@@ -85,7 +86,7 @@ export const updateCommentAction = createAsyncThunk("comment/update",async(comme
     };
     //http call
     try {
-        const { data}= await axios.put(`${baseUrl}/api/comments/${comment?.id}`,
+        const { data}= await axiosInstance.put(`/api/comments/${comment?.id}`,
         {
              description:comment?.description,
     
@@ -122,7 +123,7 @@ export const fetchCommentAction = createAsyncThunk("comment/fetch-details",async
     };
     //http call
     try {
-        const { data}= await axios.get(`${baseUrl}/api/comments/${id}`,
+        const { data}= await axiosInstance.get(`/api/comments/${id}`,
         config
         );
         return data;

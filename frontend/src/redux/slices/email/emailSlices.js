@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk,createAction } from "@reduxjs/toolkit";
 import axios from "axios";
-//import axiosInstance from "../../../utils/api_instance";
+import axiosInstance from "../../../utils/api_instance";
 import { baseUrl } from "../../../utils/baseURL";
 
 
@@ -24,8 +24,8 @@ export const sendMailAction = createAsyncThunk(
       //http call
   
       try {
-        const { data } = await axios.post(
-          `${baseUrl}/api/email`,
+        const { data } = await axiosInstance.post(
+          `/api/email`,
           {
             to:email?.recipientEmail,
             subject:email?.subject,

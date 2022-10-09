@@ -91,8 +91,8 @@ const Register = () => {
                     <span className="ml-20">Community</span>
                   </strong>
                 </h3>
-                <h6 className="font-serif">
-                  Join with us! Register/Login.Write your knowledge and share!!
+                <h6 className="mb-12 lg:mb-16 2xl:mb-24 text-xl text-yellow-900 font-mono">
+                 " Join with us! Register and Login... Write your knowledge and share!! "
                 </h6>
 
                 {/* <div className="w-60 lg:w-1/2 px-5 ml-30 flex mb-10 mx-auto items-center justify-center h-20 w-20">
@@ -376,9 +376,9 @@ const Register = () => {
                       var decoded = jwt_decode(credentialResponse.credential);
                       console.log(decoded,"decode..");
                       const userData = {
-                        firstName: decoded.given_name,
+                        firstname: decoded.given_name,
                         email: decoded.email,
-                        lastName: decoded.family_name,
+                        lastname: decoded.family_name,
                         password: decoded.sub,
                       };
 

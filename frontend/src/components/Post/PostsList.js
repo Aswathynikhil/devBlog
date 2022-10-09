@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect ,useState} from "react";
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link ,Navigate, useNavigate} from "react-router-dom";
 import * as DOMPurify from "dompurify";
 import {
   fetchAllPostAction,
@@ -12,10 +12,14 @@ import DateFormatter from "../../utils/DateFormatter";
 import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlices";
 import LoadingComponent from "../../utils/LoadingComponent";
 import noPosts from "../../img/noPosts.png";
+// import LazyLoad from 'react-lazyload'
 
 export default function PostsList() {
+
+  const [search, setSearch] = useState("");
   //dispatch
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Select user from from store
   const user = useSelector((state) => state?.users);
@@ -23,8 +27,14 @@ export default function PostsList() {
 
   //select post from store
   const post = useSelector((state) => state?.post);
-  const { postLists, loading, appErr, serverErr, likes, dislikes } = post;
+  const {     hasMore,postLists, loading, appErr, serverErr, likes, dislikes ,pageNumber,} = post;
   console.log(postLists);
+
+
+  const blogsPerPage = 10;
+  const pagesVisited = pageNumber * blogsPerPage;
+  const pageCount = Math.ceil([postLists].length / blogsPerPage);
+  console.log(pageCount,"ghjkl");
 
   //select category from store
   const category = useSelector((state) => state?.category);
@@ -35,9 +45,22 @@ export default function PostsList() {
     serverErr: catServerErr,
   } = category;
   console.log(categoryList);
+
+
+  const handlePageClick = ({ selected: selectedPage }) => {
+    pageNumber(selectedPage);
+  };
+
   // fetch post
   useEffect(() => {
-    dispatch(fetchAllPostAction(""));
+    // dispatch(fetchAllPostAction(""));
+        //load all the posts from server
+        if (userAuth) {
+          dispatch(fetchAllPostAction(""));
+        } 
+        else {
+          navigate("/login");
+        }
   }, [dispatch, likes, dislikes]);
 
   // fetch category
@@ -50,6 +73,23 @@ export default function PostsList() {
       <section>
         <div class="py-20 bg-gray-200 min-h-screen radius-for-skewed">
           <div class="container mx-auto px-4">
+
+          <div className="flex justify-center  ">
+              <div className="flex border border-gray-300 rounded">
+                <input
+                  onChange={(event) => {
+                    setSearch(event.target.value);
+                  }}
+                  type="text"
+                  className="block w-96 px-4 py-2 text-black-700 bg-white border rounded-md focus:border-gray-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                  placeholder="Search..."
+                />
+                <button className="px-4 text-white bg-black hover:bg-gray-500  border-l rounded ">
+                  Search
+                </button>
+              </div>
+            </div>
+
             <div class="mb-16 flex flex-wrap items-center">
               <div class="w-full lg:w-1/2">
                 <span class="text-black-600 font-bold font-serif text-blue-400">
@@ -147,7 +187,19 @@ export default function PostsList() {
                       </div>
                  
                   ) : (
-                    postLists?.map((post) => (
+                    postLists ?.filter((val) => {
+                      if (search === "") {
+                        return val;
+                      } else if (
+                        val.title
+                          .toLowerCase()
+                          .includes(search.toLocaleLowerCase())
+                      ) {
+                        return val;
+                      }
+                    })
+                    
+                    ?.map((post) => (
                       <div class="flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
                         <div class="mb-10 w-full h-41 lg:w-1/4 px-8 py-8">
                           <Link>

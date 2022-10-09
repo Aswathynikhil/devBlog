@@ -39,6 +39,8 @@ const Homepage = () => {
               <img className="w-full" src={posterHome} alt={posterHome} />
             </div>
           </div>
+
+          
         </div>
       </section>
     </>
