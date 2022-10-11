@@ -37,7 +37,8 @@ const PostDetails = () => {
     dispatch(fetchSinglePostDetailsAction(id));
   }, [id, dispatch, commentCreated, commentDeleted]);
   if (isDeleted) return <Navigate to="/posts" />;
-
+  
+  if (!userAuth) return <Navigate to="/login" />;
   return (
     <>
       {loading ? (

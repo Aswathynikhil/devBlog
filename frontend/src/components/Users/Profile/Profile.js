@@ -41,7 +41,7 @@ export default function Profile() {
   useEffect(() => {
     dispatch(userProfileAction(id));
   }, [id, dispatch, followed, unFollowed]);
-    console.log(profile?.viewedBy,"kkkkkkkkkkkkkkk");
+    console.log(id,"hhhjn");
   //isLogin
 
   const isLoginUser = userAuth?._id === profile?._id;
@@ -200,7 +200,7 @@ export default function Profile() {
                            
                               </>
                               {/* Send Mail */}
-                             {userAuth?.isAdmin==true ?
+                             {userAuth?.isAdmin===true ?
                               (<Link
                                 to="/send-mail"
                                 state={{
@@ -235,9 +235,12 @@ export default function Profile() {
                     </div>
                     <div className="flex justify-center place-items-start flex-wrap  md:mb-0">
                       <div className="w-full md:w-1/3 px-4 mb-4 md:mb-0">
-                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 font-serif font-bold text-blue-900">
+                        {isLoginUser ?   <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 font-serif font-bold text-blue-900">
                           Who viewed my profile : {profile?.viewedBy?.length}
-                        </h1>
+                        </h1>:
+                        <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 font-serif font-bold text-blue-900">
+                          Who viewed the profile : {profile?.viewedBy?.length}
+                        </h1>}
 
                         {/* Who view my post */}
                         <ul className="">
@@ -272,15 +275,18 @@ export default function Profile() {
                       </div>
                       {/* All my Post */}
                       <div className="w-full md:w-2/3 px-4 mb-4 md:mb-0">
+                        {isLoginUser ?   <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 font-serif text-blue-900 font-bold">
+                          My Posts - {profile?.posts?.length}
+                        </h1>:
                         <h1 className="text-center text-xl border-gray-500 mb-2 border-b-2 font-serif text-blue-900 font-bold">
-                          My Post - {profile?.posts?.length}
-                        </h1>
+                          Posts - {profile?.posts?.length}
+                        </h1>}
                         {/* Loop here */}
                         {profile?.posts?.length <= 0 ? (
                           <h1 className="text-center text-xl">No Post Found</h1>
                         ) : (
                           profile?.posts?.map((post) => (
-                            <div key={post?._id} className="flex flex-wrap  -mx-3 mt-3  lg:mb-6">
+                            <div key={post?._id} className="flex flex-wrap  -mx-3 pt-10  lg:mb-6">
                               <div className="mb-2   w-full lg:w-1/4 px-3">
                                 <Link to="">
                                   <img

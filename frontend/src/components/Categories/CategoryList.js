@@ -13,9 +13,10 @@ const CategoryList = () => {
     dispatch(fetchAllCategoriesAction());
   }, [dispatch]);
   const category = useSelector(state => state?.category);
+  
 
   const { categoryList, loading, appErr, serverErr } = category;
-
+  // if (!userAuth) return <Navigate to="/login" />;
   return (
     <>
       {loading ? (

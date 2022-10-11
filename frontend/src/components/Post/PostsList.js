@@ -1,7 +1,7 @@
-import { useEffect ,useState} from "react";
+import { useEffect, useState } from "react";
 import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { Link ,Navigate, useNavigate} from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import * as DOMPurify from "dompurify";
 import {
   fetchAllPostAction,
@@ -15,7 +15,6 @@ import noPosts from "../../img/noPosts.png";
 // import LazyLoad from 'react-lazyload'
 
 export default function PostsList() {
-
   const [search, setSearch] = useState("");
   //dispatch
   const dispatch = useDispatch();
@@ -27,14 +26,21 @@ export default function PostsList() {
 
   //select post from store
   const post = useSelector((state) => state?.post);
-  const {     hasMore,postLists, loading, appErr, serverErr, likes, dislikes ,pageNumber,} = post;
+  const {
+    postLists,
+    loading,
+    appErr,
+    serverErr,
+    likes,
+    dislikes,
+    pageNumber,
+  } = post;
   console.log(postLists);
 
-
-  const blogsPerPage = 10;
-  const pagesVisited = pageNumber * blogsPerPage;
-  const pageCount = Math.ceil([postLists].length / blogsPerPage);
-  console.log(pageCount,"ghjkl");
+  // const blogsPerPage = 10;
+  // const pagesVisited = pageNumber * blogsPerPage;
+  // const pageCount = Math.ceil([postLists].length / blogsPerPage);
+  // console.log(pageCount, "ghjkl");
 
   //select category from store
   const category = useSelector((state) => state?.category);
@@ -47,20 +53,17 @@ export default function PostsList() {
   console.log(categoryList);
 
 
-  const handlePageClick = ({ selected: selectedPage }) => {
-    pageNumber(selectedPage);
-  };
-
   // fetch post
   useEffect(() => {
-    // dispatch(fetchAllPostAction(""));
-        //load all the posts from server
-        if (userAuth) {
-          dispatch(fetchAllPostAction(""));
-        } 
-        else {
-          navigate("/login");
-        }
+    dispatch(fetchAllPostAction(""));
+    //load all the posts from server
+    // if (userAuth) {
+    //   dispatch(fetchAllPostAction(""));
+    // }
+
+    // else {
+    //   navigate("/login");
+    // }
   }, [dispatch, likes, dislikes]);
 
   // fetch category
@@ -68,13 +71,13 @@ export default function PostsList() {
     dispatch(fetchAllCategoriesAction());
   }, [dispatch]);
 
+ 
   return (
     <>
       <section>
         <div class="py-20 bg-gray-200 min-h-screen radius-for-skewed">
           <div class="container mx-auto px-4">
-
-          <div className="flex justify-center  ">
+            <div className="flex justify-center  ">
               <div className="flex border border-gray-300 rounded">
                 <input
                   onChange={(event) => {
@@ -164,186 +167,193 @@ export default function PostsList() {
                       {catAppErr} {catServerErr}
                     </h1>
                   ) : postLists?.length <= 0 ? (
-               
+                    <div className="">
                       <div className="">
-                    
-                    <div className="" >
-                          <Link
-                            to="/create-post"
-                            className="pr-3mr-2 px-4 py-2 border border-transparent shadow-lg shadow-gray-400 text-sm font-medium rounded-md text-white bg-gray-800  hover:bg-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
-                          >
-                            <span>Creat New Post</span>
-                          </Link>
-                        </div>
-
-                         
-                        <div className="w-60 lg:w-1/2 px-5   mb-10   justify-center h-20 w-20 ">
-                          <img className="w-full" src={noPosts} alt={noPosts} />
-                        </div>
-
-                        
-                       
-
+                        <Link
+                          to="/create-post"
+                          className="pr-3mr-2 px-4 py-2 border border-transparent shadow-lg shadow-gray-400 text-sm font-medium rounded-md text-white bg-gray-800  hover:bg-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
+                        >
+                          <span>Creat New Post</span>
+                        </Link>
                       </div>
-                 
+
+                      <div className="w-60 lg:w-1/2 px-5   mb-10   justify-center h-20 w-20 ">
+                        <img className="w-full" src={noPosts} alt={noPosts} />
+                      </div>
+                    </div>
                   ) : (
-                    postLists ?.filter((val) => {
-                      if (search === "") {
-                        return val;
-                      } else if (
-                        val.title
-                          .toLowerCase()
-                          .includes(search.toLocaleLowerCase())
-                      ) {
-                        return val;
-                      }
-                    })
-                    
-                    ?.map((post) => (
-                      <div class="flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
-                        <div class="mb-10 w-full h-41 lg:w-1/4 px-8 py-8">
-                          <Link>
-                            {/* Post image */}
-                            <img
-                              class="mt-4 w-full h-30 object-cover rounded"
-                              src={post?.image}
-                              alt=""
-                            />
-                          </Link>
-                          {/* Likes, views dislikes */}
-                          <div className="flex flex-row bg-gray-300 justify-center w-full  items-center ">
-                            {/* Likes */}
-                            <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
-                              {/* Toggle like  */}
-                              {post?.likes.includes(userAuth?._id) ? (
-                                <div className="">
-                                  <ThumbUpIcon
-                                    onClick={() =>
-                                      dispatch(
-                                        toggleAddLikesToPostAction(post?._id)
-                                      )
-                                    }
-                                    className="h-7 w-7 text-blue-600 cursor-pointer"
-                                  />
-                                </div>
-                              ) : (
-                                <div className="">
-                                  <ThumbUpIcon
-                                    onClick={() =>
-                                      dispatch(
-                                        toggleAddLikesToPostAction(post?._id)
-                                      )
-                                    }
-                                    className="h-7 w-7 text-gray-600 cursor-pointer"
-                                  />
-                                </div>
-                              )}
-                              <div className="pl-2 text-gray-600">
-                                {post?.likes?.length ? post?.likes?.length : 0}
-                              </div>
-                            </div>
-                            {/* Dislike */}
-                            <div className="flex flex-row  justify-center items-center ml-4 mr-4 pb-2 pt-1 ">
-                              {post?.disLikes.includes(userAuth?._id) ? (
-                                <div>
-                                  <ThumbDownIcon
-                                    onClick={() =>
-                                      dispatch(
-                                        toggleAddDislikesToPostAction(post?._id)
-                                      )
-                                    }
-                                    className="h-7 w-7 cursor-pointer text-red-600"
-                                  />
-                                </div>
-                              ) : (
-                                <div>
-                                  <ThumbDownIcon
-                                    onClick={() =>
-                                      dispatch(
-                                        toggleAddDislikesToPostAction(post?._id)
-                                      )
-                                    }
-                                    className="h-7 w-7 cursor-pointer text-gray-600"
-                                  />
-                                </div>
-                              )}
+                    postLists
+                      ?.filter((val) => {
+                        if (search === "") {
+                          return val;
+                        } else if (
+                          val.title
+                            .toLowerCase()
+                            .includes(search.toLocaleLowerCase())
+                        ) {
+                          return val;
+                        }
+                      })
 
-                              <div className="pl-2 text-gray-600">
-                                {post?.disLikes?.length
-                                  ? post?.disLikes?.length
-                                  : 0}
-                              </div>
-                            </div>
-                            {/* Views */}
-                            <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
-                              <div>
-                                <EyeIcon className="h-7 w-7  text-gray-400" />
-                              </div>
-                              <div className="pl-2 text-gray-600">
-                                {post?.numViews}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="w-full lg:w-3/4 px-3">
-                          <Link className="hover:underline">
-                            <h3 className="mb-1 mt-20 text-2xl text-black-400 font-bold font-heading">
-                              {/* {capitalizeWord(post?.title)} */}
-                              {post?.title}
-                            </h3>
-                          </Link>
-
-                          <div
-                            className="text-black truncate "
-                            dangerouslySetInnerHTML={{
-                              __html: DOMPurify.sanitize(post?.description),
-                            }}
-                          ></div>
-
-                          {/* Read more */}
-                          <div className="mt-5">
-                            <Link
-                              to={`/posts/${post?._id}`}
-                              className=" text-gray-500 hover:underline "
-                            >
-                              Read More..
+                      ?.map((post) => (
+                        <div class="flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
+                          <div class="mb-10 w-full h-41 lg:w-1/4 px-8 py-8">
+                            <Link>
+                              {/* Post image */}
+                              <img
+                                class="p-4 mt-4 w-full h-30 object-cover rounded"
+                                src={post?.image}
+                                alt=""
+                              />
                             </Link>
+                            {/* Likes, views dislikes */}
+                            <div className="flex flex-row bg-gray-300 justify-center w-full  items-center ">
+                              {/* Likes */}
+                              <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
+                                {/* Toggle like  */}
+                                 
+
+
+                                { post?.likes.includes(userAuth?._id) ? (
+                                  <div className="">
+                                    
+                                    <ThumbUpIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddLikesToPostAction(post?._id)
+                                        )
+                                      }
+                                      className="h-7 w-7 text-blue-600 cursor-pointer"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="">
+                                    <ThumbUpIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddLikesToPostAction(post?._id)
+                                        )
+                                      }
+                                      className="h-7 w-7 text-gray-600 cursor-pointer"
+                                    />
+                                  </div>
+                                ) }
+                            
+                       
+                            
+                                <div className="pl-2 text-gray-600">
+                                  {post?.likes?.length
+                                    ? post?.likes?.length
+                                    : 0}
+                                </div>
+                              </div>
+                              {/* Dislike */}
+                              <div className="flex flex-row  justify-center items-center ml-4 mr-4 pb-2 pt-1 ">
+                                {post?.disLikes.includes(userAuth?._id) ? (
+                                  <div>
+                                    <ThumbDownIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddDislikesToPostAction(
+                                            post?._id
+                                          )
+                                        )
+                                      }
+                                      className="h-7 w-7 cursor-pointer text-red-600"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <ThumbDownIcon
+                                      onClick={() =>
+                                        dispatch(
+                                          toggleAddDislikesToPostAction(
+                                            post?._id
+                                          )
+                                        )
+                                      }
+                                      className="h-7 w-7 cursor-pointer text-gray-600"
+                                    />
+                                  </div>
+                                )}
+
+                                <div className="pl-2 text-gray-600">
+                                  {post?.disLikes?.length
+                                    ? post?.disLikes?.length
+                                    : 0}
+                                </div>
+                              </div>
+                              {/* Views */}
+                              <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
+                                <div>
+                                  <EyeIcon className="h-7 w-7  text-gray-400" />
+                                </div>
+                                <div className="pl-2 text-gray-600">
+                                  {post?.numViews}
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          {/* User Avatar */}
-                          <div className="mt-5 flex items-center ">
-                            <div className="mt-4 flex-shrink-0 mt-10">
-                              <Link>
-                                <img
-                                  className="h-10 w-10 rounded-full"
-                                  src={post?.user?.profilePhoto}
-                                  alt=""
-                                />
+                          <div className="w-full lg:w-3/4 px-3">
+                            <Link className="hover:underline">
+                              <h3 className="mb-1 pt-12 text-2xl text-black-400 font-bold font-heading">
+                                {/* {capitalizeWord(post?.title)} */}
+                                {post?.title}
+                              </h3>
+                            </Link>
+
+                            <div
+                              className="text-black truncate "
+                              dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(post?.description),
+                              }}
+                            ></div>
+
+                            {/* Read more */}
+                            <div className="mt-5">
+                              <Link
+                                to={`/posts/${post?._id}`}
+                                className=" text-gray-500 hover:underline "
+                              >
+                                Read More..
                               </Link>
                             </div>
-                            <div className="ml-3 ">
-                              <p className=" text-sm font-medium text-gray-900 mt-4">
-                                <Link
-                                  to={`/profile/${post?.user?._id}`}
-                                  className="text-black-400 hover:underline "
-                                >
-                                  {post?.user?.firstname} {post?.user?.lastname}
+                            {/* User Avatar */}
+                            <div className=" flex items-center ">
+                              <div className="mt-3 flex-shrink-0 ">
+                                <Link>
+                                  <img
+                                    className="h-10 w-10 rounded-full"
+                                    src={post?.user?.profilePhoto}
+                                    alt=""
+                                  />
                                 </Link>
-                              </p>
-                              <div className="flex space-x-1 text-sm text-black-500">
-                                <time>
-                                  <DateFormatter date={post?.createdAt} />
-                                </time>
-                                <span aria-hidden="true">&middot;</span>
+                              </div>
+                              <div className="ml-3 ">
+                                <p className=" text-sm font-medium text-gray-900 mt-4">
+                                  <Link
+                                    to={`/profile/${post?.user?._id}`}
+                                    className="text-black-400 hover:underline "
+                                  >
+                                    {post?.user?.firstname}{" "}
+                                    {post?.user?.lastname}
+                                  </Link>
+                                </p>
+                                <div className="flex space-x-1 text-sm text-black-500">
+                                  <time>
+                                    <DateFormatter date={post?.createdAt} />
+                                  </time>
+                                  <span aria-hidden="true">&middot;</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          {/* <p class="text-gray-500">
+                            {/* <p class="text-gray-500">
                              Quisque id sagittis turpis. Nulla sollicitudin rutrum
                              eros eu dictum...
                            </p> */}
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      ))
                   )
                 }
               </div>

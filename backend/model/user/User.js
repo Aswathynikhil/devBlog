@@ -83,10 +83,7 @@ const userSchema=new mongoose.Schema({
     passwwordChangedAt:Date,
     passwordResetToken:String,
     passwordResetExpires:Date,
- active:{
-        type:Boolean,
-        default:false
-    },
+
 },
 {
   toJSON:{
