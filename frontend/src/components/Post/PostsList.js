@@ -213,7 +213,7 @@ export default function PostsList() {
                               {/* Toggle like  */}
 
                               <div className="">
-                                {savedList[0]?.post?.find(
+                                {savedList && savedList[0]?.post?.find(
                                   (element) =>
                                     element?._id.toString() ===
                                     post?._id.toString()

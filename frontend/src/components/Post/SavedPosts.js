@@ -119,7 +119,7 @@ export default function SavedPosts() {
                         }
                       }),
 
-                    savedList[0]?.post?.map((post,index) => (
+                    savedList && savedList[0]?.post?.map((post,index) => (
                     <div class="flex flex-wrap bg-gray-200 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
                       <div class=" mb-10  lg:w-1/4 px-8 py-8">
                       <Link>
