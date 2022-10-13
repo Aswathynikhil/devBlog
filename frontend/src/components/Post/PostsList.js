@@ -184,7 +184,8 @@ export default function PostsList() {
                       </div>
                     </div>
                   ) : (
-                    (postLists?.filter((val) => {
+                    postLists
+                    ?.filter((val) => {
                       if (search === "") {
                         return val;
                       } else if (
@@ -194,14 +195,14 @@ export default function PostsList() {
                       ) {
                         return val;
                       }
-                    }),
-                    postLists?.map((post) => (
+                    })
+                    ?.map((post) => (
                       <div class="flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
-                        <div class=" mb-10 w-full h-41 lg:w-1/4 px-8 py-8">
+                        <div class=" mb-10 w-full h-41 lg:w-1/4 px-8 py-8 p-20">
                           <Link>
                             {/* Post image */}
                             <img
-                              class="p-1 mt-4 w-full h-30 object-cover rounded"
+                              className=" mt-4 w-full h-30 object-cover rounded"
                               src={post?.image}
                               alt=""
                             />
@@ -373,7 +374,7 @@ export default function PostsList() {
                         </div>
                       </div>
                     )))
-                  )
+                  
                 }
               </div>
             </div>
