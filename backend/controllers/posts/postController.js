@@ -3,6 +3,7 @@ const Filter = require("bad-words");
 const fs = require("fs");
 const Post = require("../../model/post/Post");
 const User = require("../../model/user/User");
+const SavedPost = require("../../model/savedPosts/SavedPosts");
 const cloudinaryUploadImg = require("../../utils/cloudinary");
 const validateMongodbId = require("../../utils/validateMongodbID");
 const { response } = require("express");
@@ -243,21 +244,92 @@ if(isDisLiked){
 
 })
 
-//-------------report---------------
-const reportPostController = expressAsyncHandler(async(req,res) =>{
-  const {postId} = req.body;
-  validateMongodbId(postId);
+// //-------------report---------------
+// const reportPostController = expressAsyncHandler(async(req,res) =>{
+//   const {postId} = req.body;
+//   validateMongodbId(postId);
 
-await Post.findByIdAndUpdate(
-    postId,
-    {
-      $inc: { report: 1 },
-    },
-    {
-      new: true,
-    })
+// await Post.findByIdAndUpdate(
+//     postId,
+//     {
+//       $inc: { report: 1 },
+//     },
+//     {
+//       new: true,
+//     })
 
+//  })
+
+// -------------------save posts------------------------
+const savePostController = expressAsyncHandler(async(req,res) =>{
+
+
+  const {id} =req.body;
+  const userId =req?.user?.id;
+  console.log(id,userId,"gfhjkl;")
+  try {
+    const savedPosts =await SavedPost.findOne({user:userId})
+    if(savedPosts){
+      const isExist = savedPosts.post.includes(id)
+      if(isExist){
+        const newSavedPosts = await SavedPost.findOneAndUpdate(
+          {user:userId}, 
+          {$pull:{post:id} },
+          {new:true}
+          )
+          res.json(newSavedPosts);
+      }
+      else{
+        const newSavedPosts = await SavedPost.findOneAndUpdate(
+          {user:userId}, 
+          {$push:{post:id} },
+          {new:true}
+          )
+          res.json(newSavedPosts);
+      }
+    }
+    else{
+
+      const newSavedPosts = await SavedPost.create({
+        user: userId,
+        post: id
+      })
+      res.json(newSavedPosts)
+    }
+  } catch (error) {
+    throw new Error(error.message)
+  }
+
+})
+
+//--------fetch saved posts---------------
+ const fetchSavedPostController = expressAsyncHandler(async (req, res) => {
+  try {
+    const posts = await SavedPost.find({user:req.user.id}).populate("post").sort({ createdAt: -1 })
+    res.json(posts);
+  } catch (error) {
+    throw new Error(error.message)
+  }
  })
+
+ //------------------delete saved post---------------
+
+ const deleteSavedPostController = expressAsyncHandler(async (req, res) => {
+  const {id }= req.params
+  const userId = req.user.id
+  try {
+    const posts = await SavedPost.findOneAndUpdate({ user: userId },
+      {
+        $pull: { post: id }
+      },
+      { new: true }
+    )
+    res.json(posts)
+  } catch (error) {
+    throw new Error(error.message) 
+  }
+
+ });
 
 module.exports = {
    createPostController , 
@@ -267,5 +339,7 @@ module.exports = {
    deletePostContoller , 
    toggleAddLikeToPostController,
    toggleAddDislikeToPostController,
-   reportPostController
+   savePostController,
+   fetchSavedPostController,
+   deleteSavedPostController
   };

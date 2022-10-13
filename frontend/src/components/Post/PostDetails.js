@@ -1,17 +1,22 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as DOMPurify from "dompurify";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
+
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import {
   deletePostAction,
   fetchSinglePostDetailsAction,
+  
 } from "../../redux/slices/posts/postSlices";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComments";
 import CommentsList from "../Comments/CommentsList";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import alert css
+import { FaRegBookmark, FaBookmark } from "react-icons/fa";
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -20,7 +25,7 @@ const PostDetails = () => {
   const dispatch = useDispatch();
   //select post details from store
   const post = useSelector((state) => state?.post);
-  const { postDetails, loading, appErr, serverErr, isDeleted } = post;
+  const { postDetails, loading, appErr, serverErr, isDeleted  } = post;
 
   //get login user
   const user = useSelector((state) => state?.users);
@@ -33,11 +38,32 @@ const PostDetails = () => {
   const comment = useSelector((state) => state.comment);
   const { commentCreated, commentDeleted } = comment;
 
+  // React-conform-alert to delete a post
+  function confirmDelete(id) {
+    console.log(id, "ghfkjlmid");
+    confirmAlert({
+      title: "Confirm to delete this post.",
+      message: "Are you sure, You want to delete this post?",
+      buttons: [
+        {
+          label: "YES",
+          onClick: () => dispatch(deletePostAction(id)),
+        },
+        {
+          label: "NO  ",
+          onClick: () => console.log("NO! I don't want to delete this post!"),
+        },
+      ],
+    });
+  }
+
   useEffect(() => {
     dispatch(fetchSinglePostDetailsAction(id));
-  }, [id, dispatch, commentCreated, commentDeleted]);
+  }, [id, dispatch, commentCreated, commentDeleted,]);
+
+
   if (isDeleted) return <Navigate to="/posts" />;
-  
+
   if (!userAuth) return <Navigate to="/login" />;
   return (
     <>
@@ -80,8 +106,7 @@ const PostDetails = () => {
                     </Link>
                   </h4>
                   <p className="text-gray-600 font-bold ">
-                    Joined:{" "}
-                    <DateFormatter date={postDetails?.createdAt} />
+                    Joined: <DateFormatter date={postDetails?.createdAt} />
                   </p>
                 </div>
               </div>
@@ -98,12 +123,13 @@ const PostDetails = () => {
                   {isCreatedBy ? (
                     <p className="flex justify-center">
                       <Link to={`/update-post/${postDetails?._id}`} class="p-3">
-                        <PencilAltIcon className="h-8 mt-3 text-black " />
+                        <PencilAltIcon className="h-7 mt-3 text-black " />
                       </Link>
                       <button
-                        onClick={() =>
-                          dispatch(deletePostAction(postDetails?._id))
-                        }
+                        // onClick={() =>
+                        //   dispatch(deletePostAction(postDetails?._id))
+                        // }
+                        onClick={() => confirmDelete(postDetails?._id)}
                         class="ml-3"
                       >
                         <TrashIcon class="h-8 mt-3 text-black-600 " />

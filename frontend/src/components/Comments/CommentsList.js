@@ -17,7 +17,8 @@ const dispatch = useDispatch();
   return (
     <div>
       <ul className="divide-y bg-gray-300 shadow-md shadow-gray-400 w-96 divide-black-300 p-3 mt-5">
-        <div className="text-black-400"> Comments</div>
+        <div className="text-black-400"> Comments
+        </div>
         <>
           {comments?.length <= 0 ? (
             <h1 className="text-black-400 text-lg text-center">No comments</h1>

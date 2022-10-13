@@ -17,7 +17,7 @@ const navigation = [
   // { name: "Home", href: "/", current: true },
   // { name: "Create", href: "/create-post", current: false },
   // { name: "Posts", href: "/posts", current: false },
-  // { name: "Authors", href: "/users", current: false },
+
 ];
 
 function classNames(...classes) {
@@ -29,6 +29,7 @@ const PrivateNavbar = ({ isLogin }) => {
   const userNavigation = [
     { name: "Your Profile", href: `/profile/${isLogin?._id}` },
     { name: "Change your password", href: "/update-password" },
+    { name: "Saved Posts", href: "/saved-posts" },
     
    
   ];
@@ -131,7 +132,7 @@ const dispatch = useDispatch();
                       <>
                         <div>
                           <Menu.Button className="bg-gray-800 ml-4 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                            <span className="sr-only">Open user menu</span>
+                            {/* <span className="sr-only">Open user menu</span> */}
                             <img
                               className="h-8 w-8 rounded-full"
                               src={isLogin?.profilePhoto}

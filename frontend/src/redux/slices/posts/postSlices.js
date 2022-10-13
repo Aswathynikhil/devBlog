@@ -184,7 +184,72 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
     }
   );
 
+  //---save posts-------------
+   export const savedPostAction = createAsyncThunk(
+    "/posts/save", async(id,{ rejectWithValue, getState, dispatch})=>{
+            //get user token
+            const user = getState()?.users;
+            const { userAuth } = user;
+            console.log(userAuth,"ghjkl");
+            const config = {
+              headers: {
+                Authorization: `Bearer ${userAuth?.token}`,
+              },
+            };
+      try {
+        const { data } = await axiosInstance.post('/api/posts/save',{id},config)
+        return data;
+      } catch (error) {
+        if (!error?.response) throw error;
+        return rejectWithValue(error?.response?.data);
+      }
+    }
+   )
 
+   //-------saved posts list------------
+
+   export const fetchSavedPostAction = createAsyncThunk(
+     "/posts/saved-lists", async(id,{ rejectWithValue, getState, dispatch})=>{
+        //get user token
+        const user = getState()?.users;
+        const { userAuth } = user;
+        console.log(userAuth,"ghjkl");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${userAuth?.token}`,
+          },
+        };
+      try {
+        const {data} =await axiosInstance.get('/api/posts/saved-list',config)
+        return data;
+      } catch (error) {
+        if (!error?.response) throw error;
+        return rejectWithValue(error?.response?.data);
+      }
+     }
+   )
+
+    //---------delete a saved post---------
+    export const deleteSavedPostAction = createAsyncThunk(
+      "/posts/delete-postSaved", async(id,{ rejectWithValue, getState, dispatch})=>{
+          //get user token
+          const user = getState()?.users;
+          const { userAuth } = user;
+          console.log(userAuth,"ghjkl");
+          const config = {
+            headers: {
+              Authorization: `Bearer ${userAuth?.token}`,
+            },
+          };
+        try {
+          const {data} =await axiosInstance.delete(`/api/posts/saved/${id}`,config);
+          return data;
+        } catch (error) {
+          if (!error?.response) throw error;
+          return rejectWithValue(error?.response?.data);
+        }
+      }
+    )
 
     //------------slices-------
 
@@ -278,7 +343,6 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
 
 
 
-
          
           //---------fetch single post details
 
@@ -336,6 +400,66 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
             state.appErr= action?.payload?.message;
             state.serverErr=action?.error?.message;
         })
+
+        //--------save post--------
+        builder.addCase(savedPostAction.pending, (state,action)=>{
+          state.loading = true;
+      })
+    
+      builder.addCase(savedPostAction.fulfilled, (state,action)=>{
+        state.saved = true
+        state.deleted = false
+        state.savedPost = action?.payload;
+        state.loading = false;
+        state.appErr = undefined;
+        state.serverErr = undefined;
+      })
+      builder.addCase(savedPostAction.rejected, (state,action)=>{
+          state.loading = false;
+          state.appErr= action?.payload?.message;
+          state.serverErr=action?.error?.message;
+      })
+
+      //------fetch saved posts-------------------
+      
+      builder.addCase(fetchSavedPostAction.pending, (state,action)=>{
+          state.loading = true;
+      })
+    
+      builder.addCase(fetchSavedPostAction.fulfilled, (state,action)=>{
+        state.saved = true
+        state.deleted = false
+        state.savedList = action?.payload;
+        state.loading = false;
+        state.appErr = undefined;
+        state.serverErr = undefined;
+      })
+      builder.addCase(fetchSavedPostAction.rejected, (state,action)=>{
+          state.loading = false;
+          state.appErr= action?.payload?.message;
+          state.serverErr=action?.error?.message;
+      })
+
+      
+         //------------delete a saved post------------
+
+      builder.addCase(deleteSavedPostAction.pending, (state,action)=>{
+        state.loading = true;
+      })
+    
+      builder.addCase(deleteSavedPostAction.fulfilled, (state,action)=>{
+        state.deleted = true
+        state.saved = false
+        state.deletedPost = action?.payload;
+        state.loading = false;
+        state.appErr = undefined;
+        state.serverErr = undefined;
+      })
+      builder.addCase(deleteSavedPostAction.rejected, (state,action)=>{
+          state.loading = false;
+          state.appErr= action?.payload?.message;
+          state.serverErr=action?.error?.message;
+      })
 
           }
     })

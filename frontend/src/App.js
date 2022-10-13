@@ -26,6 +26,7 @@ import ResetPassword from "./components/Users/PasswordManagement/ResetPassword";
 import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswordForm";
 import PageNotFound from "./components/PageNotFound";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import SavedPosts from "./components/Post/SavedPosts";
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
 
+          <Route path='/saved-posts' element={<SavedPosts />} />
 
           <Route element={<AdminProtectedRoute />}>
             

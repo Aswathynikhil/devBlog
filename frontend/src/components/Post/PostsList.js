@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
-import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
+import { ThumbUpIcon, ThumbDownIcon, EyeIcon} from "@heroicons/react/solid";
+import { FaRegBookmark, FaBookmark  } from "react-icons/fa";
+import { toast, Toaster } from "react-hot-toast";
+
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate,useParams } from "react-router-dom";
 import * as DOMPurify from "dompurify";
 import {
   fetchAllPostAction,
   toggleAddDislikesToPostAction,
   toggleAddLikesToPostAction,
+  deleteSavedPostAction,
+  savedPostAction,
+  fetchSavedPostAction,
 } from "../../redux/slices/posts/postSlices";
+
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlices";
 import LoadingComponent from "../../utils/LoadingComponent";
@@ -15,6 +22,7 @@ import noPosts from "../../img/noPosts.png";
 // import LazyLoad from 'react-lazyload'
 
 export default function PostsList() {
+  
   const [search, setSearch] = useState("");
   //dispatch
   const dispatch = useDispatch();
@@ -25,7 +33,7 @@ export default function PostsList() {
   const { userAuth } = user;
 
   //select post from store
-  const post = useSelector((state) => state?.post);
+  const posts = useSelector((state) => state?.post);
   const {
     postLists,
     loading,
@@ -34,8 +42,12 @@ export default function PostsList() {
     likes,
     dislikes,
     pageNumber,
-  } = post;
-  console.log(postLists);
+    savedPost, 
+    savedList, 
+    saved,
+     deleted
+  } = posts;
+  console.log(savedList,"bbbbbbbbbbbb");
 
   // const blogsPerPage = 10;
   // const pagesVisited = pageNumber * blogsPerPage;
@@ -56,6 +68,7 @@ export default function PostsList() {
   // fetch post
   useEffect(() => {
     dispatch(fetchAllPostAction(""));
+    dispatch(fetchSavedPostAction(""))
     //load all the posts from server
     // if (userAuth) {
     //   dispatch(fetchAllPostAction(""));
@@ -64,14 +77,16 @@ export default function PostsList() {
     // else {
     //   navigate("/login");
     // }
-  }, [dispatch, likes, dislikes]);
+  }, [dispatch, likes, dislikes, saved, deleted, savedPost]);
 
   // fetch category
   useEffect(() => {
     dispatch(fetchAllCategoriesAction());
   }, [dispatch]);
 
- 
+  const tostAlert = (msg) => {
+    toast.success(msg)
+  }
   return (
     <>
       <section>
@@ -102,13 +117,14 @@ export default function PostsList() {
                   Latest Post
                 </h2>
               </div>
-              <div class=" block text-right w-1/2">
+              <div class=" block text-right w-1/2 p-2">
+
                 {/* View All */}
                 <button
                   onClick={() => dispatch(fetchAllPostAction(""))}
-                  class="inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-black hover:bg-gray-700 text-gray-50 font-bold leading-loose transition duration-200"
+                  class=" ml-4 inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-black hover:bg-gray-700 text-gray-50 font-bold leading-loose transition duration-200"
                 >
-                  View All Posts
+                  All Posts
                 </button>
               </div>
             </div>
@@ -193,55 +209,83 @@ export default function PostsList() {
                         ) {
                           return val;
                         }
-                      })
+                      }),
 
-                      ?.map((post) => (
+                    postLists?.map((post) => (
                         <div class="flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
-                          <div class="mb-10 w-full h-41 lg:w-1/4 px-8 py-8">
+                          <div class=" mb-10 w-full h-41 lg:w-1/4 px-8 py-8">
                             <Link>
                               {/* Post image */}
                               <img
-                                class="p-4 mt-4 w-full h-30 object-cover rounded"
+                                class="p-1 mt-4 w-full h-30 object-cover rounded"
                                 src={post?.image}
                                 alt=""
                               />
                             </Link>
                             {/* Likes, views dislikes */}
-                            <div className="flex flex-row bg-gray-300 justify-center w-full  items-center ">
+                            <div className="p-1 flex flex-row bg-gray-300 justify-center w-full  items-center ">
                               {/* Likes */}
                               <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
                                 {/* Toggle like  */}
-                                 
 
-
-                                { post?.likes.includes(userAuth?._id) ? (
-                                  <div className="">
+                                <div
+                                   className="">
+                                     {savedList[0]?.post?.find((element) => element?._id.toString() === post?._id.toString())  ? (
+                                   
+                                      <FaBookmark
+                                        onClick={() => {
+                                          tostAlert(
+                                            `${post?.title} unsaved successfully`
+                                          );
+                                          dispatch(
+                                            deleteSavedPostAction(post?._id)
+                                          );
+                                         
+                                        }}  className=" h-5 w-5 text-blue-600 cursor-pointer"
+                                      />
+                                     
+                                    ) : (
+                                      
+                                      <FaRegBookmark
+                                        onClick={() => {
+                                          tostAlert(
+                                            `${post?.title} saved successfully`
+                                          );
+                                          dispatch(savedPostAction(post?._id));
+                                         
+                                        }} className="h-5 w-5 text-black-600 cursor-pointer"
+                                      />
                                     
+                                    )}
+                        
+                                </div>
+
+                                {post?.likes.includes(userAuth?._id) ? (
+                                  <div className="ml-4">
                                     <ThumbUpIcon
                                       onClick={() =>
                                         dispatch(
                                           toggleAddLikesToPostAction(post?._id)
                                         )
                                       }
-                                      className="h-7 w-7 text-blue-600 cursor-pointer"
+                                      className=" h-5 w-5 text-blue-600 cursor-pointer"
                                     />
                                   </div>
                                 ) : (
-                                  <div className="">
+                                  <div className="ml-4">
                                     <ThumbUpIcon
                                       onClick={() =>
                                         dispatch(
                                           toggleAddLikesToPostAction(post?._id)
                                         )
                                       }
-                                      className="h-7 w-7 text-gray-600 cursor-pointer"
+                                      className=" h-5 w-5 text-gray-600 cursor-pointer"
                                     />
                                   </div>
-                                ) }
-                            
-                       
-                            
-                                <div className="pl-2 text-gray-600">
+                                )}
+                                
+
+                                <div className="text-gray-600">
                                   {post?.likes?.length
                                     ? post?.likes?.length
                                     : 0}
@@ -259,7 +303,7 @@ export default function PostsList() {
                                           )
                                         )
                                       }
-                                      className="h-7 w-7 cursor-pointer text-red-600"
+                                      className="h-5 w-5 cursor-pointer text-red-600"
                                     />
                                   </div>
                                 ) : (
@@ -272,12 +316,12 @@ export default function PostsList() {
                                           )
                                         )
                                       }
-                                      className="h-7 w-7 cursor-pointer text-gray-600"
+                                      className="h-5 w-5 cursor-pointer text-gray-600"
                                     />
                                   </div>
                                 )}
 
-                                <div className="pl-2 text-gray-600">
+                                <div className=" text-gray-600">
                                   {post?.disLikes?.length
                                     ? post?.disLikes?.length
                                     : 0}
@@ -286,14 +330,15 @@ export default function PostsList() {
                               {/* Views */}
                               <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
                                 <div>
-                                  <EyeIcon className="h-7 w-7  text-gray-400" />
+                                  <EyeIcon className="h-5 w-5  text-gray-400" />
                                 </div>
-                                <div className="pl-2 text-gray-600">
+                                <div className=" text-gray-600">
                                   {post?.numViews}
                                 </div>
                               </div>
                             </div>
                           </div>
+
                           <div className="w-full lg:w-3/4 px-3">
                             <Link className="hover:underline">
                               <h3 className="mb-1 pt-12 text-2xl text-black-400 font-bold font-heading">
@@ -380,6 +425,10 @@ export default function PostsList() {
             </svg>
           </div>
         </div> */}
+         <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
       </section>
     </>
   );
