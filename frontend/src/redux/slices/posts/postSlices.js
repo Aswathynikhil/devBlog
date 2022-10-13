@@ -221,6 +221,7 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
         };
       try {
         const {data} =await axiosInstance.get('/api/posts/saved-list',config)
+        console.log(data,"data");
         return data;
       } catch (error) {
         if (!error?.response) throw error;
@@ -427,6 +428,7 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
       })
     
       builder.addCase(fetchSavedPostAction.fulfilled, (state,action)=>{
+        console.log(action?.payload,"action");
         state.saved = true
         state.deleted = false
         state.savedList = action?.payload;

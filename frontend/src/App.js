@@ -40,7 +40,7 @@ function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
 
-          <Route path='/saved-posts' element={<SavedPosts />} />
+          <Route path='/saved-list' element={<SavedPosts />} />
 
           <Route element={<AdminProtectedRoute />}>
             

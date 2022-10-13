@@ -29,7 +29,7 @@ const PrivateNavbar = ({ isLogin }) => {
   const userNavigation = [
     { name: "Your Profile", href: `/profile/${isLogin?._id}` },
     { name: "Change your password", href: "/update-password" },
-    { name: "Saved Posts", href: "/saved-posts" },
+    { name: "Saved Posts", href: "/saved-list" },
     
    
   ];
