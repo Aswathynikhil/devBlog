@@ -157,18 +157,40 @@ export default function Profile() {
                               {/* Upload profile photo */}
 
                               {isLoginUser && 
-                               <Link
+                              ( <Link
                                to={`/profilephoto-upload/${profile?._id}`}
-                               className="inline-flex justify-center px-4 py-2 border border-gray-500 shadow-md shadow-gray-100 text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500"
-                             >
+                               className="ml-2 inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                                >
                                <UploadIcon
                                  className="-ml-1 mr-2 h-5 w-5 text-white-400 shadow-md shadow-gray-50"
                                  aria-hidden="true"
                                />
-                               <span>Upload Photo</span>
-                             </Link>
-                             }
+                               <span>Upload Profile Photo</span>
+                             </Link> )
+                            
+
+                              } 
+                                {/* Update Profile */}
+
+                          {isLoginUser && 
+                                  <Link
+                                   to={`/update-profile/${profile?._id}`}
+                                   className="ml-3 inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                                 >
+                                   <UserIcon
+                                     className="-ml-1 mr-2 h-5 w-5 text-white-400 shadow-md shadow-gray-50"
+                                     aria-hidden="true"
+                                   />
+                                   <span>Update Profile</span>
+                                 </Link>
+                               }  
                            </div>
+                         
+
+                           
+                             
+                           
+                              
                           
                              
 
@@ -210,7 +232,7 @@ export default function Profile() {
 
                               {/* Update Profile */}
 
-                              <>
+                              {/* <>
                               {isLoginUser && 
                                    <Link
                                    to={`/update-profile/${profile?._id}`}
@@ -224,7 +246,7 @@ export default function Profile() {
                                  </Link>
                               }
                            
-                              </>
+                              </> */}
                               {/* Send Mail */}
                              {userAuth?.isAdmin===true ?
                               (<Link

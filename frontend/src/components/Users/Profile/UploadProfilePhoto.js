@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import styled from "styled-components";
 import { useSelector,useDispatch} from "react-redux"
+import React, { useEffect, useState } from 'react';
 import * as Yup from "yup";
 import { uploadProfilePhotoAction } from "../../../redux/slices/users/userSlices";
 //Css for dropzone
@@ -30,6 +31,7 @@ const formSchema = Yup.object({
 export default function UploadProfilePhoto() {
   const dispatch = useDispatch();
   const navigate= useNavigate()
+  const [preview, setPreview] = useState('');
   //formik
 
   const formik = useFormik({
@@ -44,6 +46,19 @@ export default function UploadProfilePhoto() {
     validationSchema: formSchema,
   });
 
+  // Image Preview
+	let image = formik?.values?.image;
+	useEffect(() => {
+		if (image) {
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setPreview(reader.result);
+			};
+			reader.readAsDataURL(image);
+		} else {
+			setPreview(null);
+		}
+	}, [image]);
   //store data
   const users = useSelector(state => state?.users) ;
   const { profilePhoto, loading,appErr,serverErr, userAuth} = users
@@ -71,6 +86,21 @@ export default function UploadProfilePhoto() {
                 {serverErr} {appErr}
               </h2>
             ) : null}
+
+          {/* image preview */}
+								{preview ? (
+									<div className="border border-gray-300 p-2 bg-gray-100 rounded-md shadow-sm">
+										<img
+											className="mx-auto  w-2/4"
+											src={preview}
+											alt=""
+											onClick={() => {
+												setPreview(null);
+											}}
+										/>
+									</div>
+								) : (
+
             <Container className="">
               <Dropzone
                 onBlur={formik.handleBlur("image")}
@@ -96,6 +126,7 @@ export default function UploadProfilePhoto() {
                 )}
               </Dropzone>
             </Container>
+                )}
 
             <div className="text-red-500">
               {formik.touched.image && formik.errors.image}

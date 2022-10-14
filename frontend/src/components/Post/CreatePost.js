@@ -10,9 +10,10 @@ import styled from "styled-components";
 import JoditEditor from "jodit-react";
 import { useMemo, useRef } from "react";
 import React, {Component, PropTypes} from 'react';
+import {useEffect,useState} from "react"
 //import RichTextEditor from 'react-rte';
 //import NewFeed from "../homepage/NewFeed";
-import { useEffect } from "react";
+
 
 //form schema
 const formSchema = Yup.object().shape({
@@ -45,7 +46,7 @@ export default function CreatePost() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [preview, setPreview] = useState('');
   
 
   //select store data
@@ -78,7 +79,23 @@ export default function CreatePost() {
       
     },
     validationSchema: formSchema,
+
+    
   });
+
+  // Image Preview
+	let image = formik?.values?.image;
+	useEffect(() => {
+		if (image) {
+			const reader = new FileReader();
+			reader.onloadend = () => {
+				setPreview(reader.result);
+			};
+			reader.readAsDataURL(image);
+		} else {
+			setPreview(null);
+		}
+	}, [image]);
 if(isCreated)return <Navigate to='/posts' />
   return (
     <>
@@ -190,6 +207,22 @@ if(isCreated)return <Navigate to='/posts' />
                 >
                   Select image to upload
                 </label>
+
+                
+          {/* image preview */}
+								{preview ? (
+									<div className="border border-gray-300 p-2 bg-gray-100 rounded-md shadow-sm">
+										<img
+											className="mx-auto  w-2/4"
+											src={preview}
+											alt=""
+											onClick={() => {
+												setPreview(null);
+											}}
+										/>
+									</div>
+								) : (
+
                 <Container className="container bg-gray-700">
                   <Dropzone
                     onBlur={formik.handleBlur("image")}
@@ -215,6 +248,7 @@ if(isCreated)return <Navigate to='/posts' />
                     )}
                   </Dropzone>
                 </Container>
+                )}
 
                 {/* Err msg */}
                 <div className="text-red-500">

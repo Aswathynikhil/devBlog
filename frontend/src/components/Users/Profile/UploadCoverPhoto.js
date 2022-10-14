@@ -3,9 +3,10 @@ import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import styled from "styled-components";
-import { useSelector,useDispatch} from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
-import { uploadCoverPhotoAction} from "../../../redux/slices/users/userSlices";
+import { uploadCoverPhotoAction } from "../../../redux/slices/users/userSlices";
 //Css for dropzone
 
 const Container = styled.div`
@@ -29,25 +30,40 @@ const formSchema = Yup.object({
 
 export default function UploadCoverPhoto() {
   const dispatch = useDispatch();
-  const navigate= useNavigate()
+  const navigate = useNavigate();
+  const [preview, setPreview] = useState("");
   //formik
 
   const formik = useFormik({
     initialValues: {
       image: "",
     },
-    onSubmit: values => {
+    onSubmit: (values) => {
       //console.log(values);
       dispatch(uploadCoverPhotoAction(values));
     },
     validationSchema: formSchema,
   });
 
-  //store data
-  const users = useSelector(state => state?.users) ;
-  const { loading,appErr,serverErr, userAuth, coverPhoto} = users
+  // Image Preview
+  let image = formik?.values?.image;
+  useEffect(() => {
+    if (image) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(image);
+    } else {
+      setPreview(null);
+    }
+  }, [image]);
 
-  if(coverPhoto){
+  //store data
+  const users = useSelector((state) => state?.users);
+  const { loading, appErr, serverErr, userAuth, coverPhoto } = users;
+
+  if (coverPhoto) {
     navigate(`/profile/${userAuth?._id}`);
   }
   return (
@@ -69,31 +85,46 @@ export default function UploadCoverPhoto() {
                 {serverErr} {appErr}
               </h2>
             ) : null}
-            <Container className="">
-              <Dropzone
-                onBlur={formik.handleBlur("image")}
-                accept="image/jpeg, image/png"
-                onDrop={acceptedFiles => {
-                  formik.setFieldValue("image", acceptedFiles[0]);
-                }}
-              >
-                {({ getRootProps, getInputProps }) => (
-                  <div className="container">
-                    <div
-                      {...getRootProps({
-                        className: "dropzone",
-                        onDrop: event => event.stopPropagation(),
-                      })}
-                    >
-                      <input {...getInputProps()} />
-                      <p className="text-gray-600 text-lg cursor-pointer hover:text-gray-500">
-                        Click here to select image
-                      </p>
+
+            {/* image preview */}
+            {preview ? (
+              <div className="border border-gray-300 p-2 bg-gray-100 rounded-md shadow-sm">
+                <img
+                  className="mx-auto  w-2/4"
+                  src={preview}
+                  alt=""
+                  onClick={() => {
+                    setPreview(null);
+                  }}
+                />
+              </div>
+            ) : (
+              <Container className="">
+                <Dropzone
+                  onBlur={formik.handleBlur("image")}
+                  accept="image/jpeg, image/png"
+                  onDrop={(acceptedFiles) => {
+                    formik.setFieldValue("image", acceptedFiles[0]);
+                  }}
+                >
+                  {({ getRootProps, getInputProps }) => (
+                    <div className="container">
+                      <div
+                        {...getRootProps({
+                          className: "dropzone",
+                          onDrop: (event) => event.stopPropagation(),
+                        })}
+                      >
+                        <input {...getInputProps()} />
+                        <p className="text-gray-600 text-lg cursor-pointer hover:text-gray-500">
+                          Click here to select image
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </Dropzone>
-            </Container>
+                  )}
+                </Dropzone>
+              </Container>
+            )}
 
             <div className="text-red-500">
               {formik.touched.image && formik.errors.image}
@@ -103,25 +134,29 @@ export default function UploadCoverPhoto() {
             </p>
 
             <div>
-            {loading ? (<button
-                disabled
-                className="inline-flex justify-center w-full px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-              >
-                <UploadIcon
-                  className="-ml-1 mr-2 h-5  text-gray-400"
-                  aria-hidden="true"
-                />
-                <span>Loading Please Wait....</span>
-              </button>):(<button
-                type="submit"
-                className="inline-flex justify-center w-full px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-              >
-                <UploadIcon
-                  className="-ml-1 mr-2 h-5  text-gray-400"
-                  aria-hidden="true"
-                />
-                <span>Upload Photo</span>
-              </button>)}
+              {loading ? (
+                <button
+                  disabled
+                  className="inline-flex justify-center w-full px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                >
+                  <UploadIcon
+                    className="-ml-1 mr-2 h-5  text-gray-400"
+                    aria-hidden="true"
+                  />
+                  <span>Loading Please Wait....</span>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="inline-flex justify-center w-full px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                >
+                  <UploadIcon
+                    className="-ml-1 mr-2 h-5  text-gray-400"
+                    aria-hidden="true"
+                  />
+                  <span>Upload Photo</span>
+                </button>
+              )}
             </div>
           </form>
         </div>
