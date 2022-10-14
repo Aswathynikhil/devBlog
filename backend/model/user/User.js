@@ -14,6 +14,10 @@ const userSchema=new mongoose.Schema({
         type:String,
         default:'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'
     },
+    coverPhoto:{
+        type:String,
+        default:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5f3ItCiY-rUvAd7B53SNptaJjEtVayxHWhg&usqp=CAU'
+    },
     email:{
         type:String,
         required:[true,"Email is required"]

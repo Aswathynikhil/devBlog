@@ -21,6 +21,10 @@ const postSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    reportCount: {
+      type: Number,
+      default: 0,
+    },
     numViews: {
       type: Number,
       default: 0,

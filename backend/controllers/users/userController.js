@@ -459,6 +459,30 @@ const profilePhotoUploadController = expressAsyncHandler(async(req,res)=>{
   res.json(imgUploaded);
 })
 
+
+//----------cover photo upload----------
+
+const coverPhotoUploadController = expressAsyncHandler(async(req,res)=>{
+  // find the login user
+  // console.log(req.user);
+
+  const {_id}= req?.user;
+
+  //get the path to the image
+  const localPath = `public/images/profile/${req.file.filename}` ;
+  // upload to cloudinary
+  const imgUploaded = await cloudinaryUploadImg(localPath);
+  // console.log(imgUploaded);
+  const foundUser = await User.findByIdAndUpdate(_id,{
+    coverPhoto: imgUploaded?.url,
+  },{new:true})
+
+  //remove the saved image
+  fs.unlinkSync(localPath)
+  // res.json(foundUser);
+  res.json(imgUploaded);
+})
+
 module.exports = {
    userRegisterController,
    userLoginController,
@@ -476,5 +500,6 @@ module.exports = {
   accountVerification,
   forgetPasswordToken,
   passwordReset,
-  profilePhotoUploadController
+  profilePhotoUploadController,
+  coverPhotoUploadController
 };

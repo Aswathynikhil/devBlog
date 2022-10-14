@@ -15,10 +15,12 @@ const { userRegisterController ,
      accountVerification,
      forgetPasswordToken,
      passwordReset,
-     profilePhotoUploadController
+     profilePhotoUploadController,
+     coverPhotoUploadController
+     
     } = require('../../controllers/users/userController');
 const authMiddleware = require('../../middlewares/auth/authMiddleware');
-const {photoUpload, profilePhotoResize} = require("../../middlewares/uploads/photoUpload");
+const {photoUpload, profilePhotoResize, coverPhotoResize} = require("../../middlewares/uploads/photoUpload");
 const userRoutes = express.Router();
 
 userRoutes.post('/register',userRegisterController)
@@ -29,6 +31,7 @@ userRoutes.put('/follow',authMiddleware,followingUserController)
 userRoutes.put('/unfollow',authMiddleware,unFollowUserController)
 // userRoutes.put('/profile-photo',authMiddleware,profilePhotoUpload,profilePhotoUploadController)
 userRoutes.put("/profilephoto-upload",authMiddleware,photoUpload.single("image"),profilePhotoResize, profilePhotoUploadController );
+userRoutes.put("/coverphoto-upload",authMiddleware,photoUpload.single("image"),coverPhotoResize, coverPhotoUploadController );
 
 userRoutes.put('/update_password/',authMiddleware,updatePasswordController)
 userRoutes.post('/forgetpasswordtoken',forgetPasswordToken)

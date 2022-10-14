@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import * as DOMPurify from 'dompurify';
 // import { Link ,useParams} from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
@@ -45,6 +45,16 @@ export default function Profile() {
   //isLogin
 
   const isLoginUser = userAuth?._id === profile?._id;
+
+  // const isLoggedUser = userAuth?._id === id
+  // const isFollowing = profile?.followers?.find((row) => {
+  //     return row?._id.toString() === userAuth?._id.toString()
+  //  })
+
+  //  const [data, setData] = useState([])
+  //  const [displayData, setDisplayData] = useState('My Followers')
+  //  const [number, setNumber] = useState(0)
+
   return (
     <>
       <div className=" bg-white ">
@@ -67,9 +77,25 @@ export default function Profile() {
                       <div>
                         <img
                           className="h-32 w-full object-cover lg:h-48"
-                          src={profile?.profilePhoto}
+                          src={profile?.coverPhoto}
                           alt={profile?.firstname}
                         />
+                       
+                            {/* Upload cover photo */}
+
+                            {isLoginUser && 
+                               <Link
+                               to={`/coverphoto-upload/${profile?._id}`}
+                               className="float-right"
+                             >
+                               <UploadIcon
+                                 className="-ml-1  h-10 w-10 text-white shadow-md shadow-gray-50 bg-gray-400"
+                                 aria-hidden="true"
+                               />
+                             
+                             </Link>
+                             }
+                       
                       </div>
                       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">

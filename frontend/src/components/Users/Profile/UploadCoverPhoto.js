@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import styled from "styled-components";
 import { useSelector,useDispatch} from "react-redux"
 import * as Yup from "yup";
-import { uploadProfilePhotoAction } from "../../../redux/slices/users/userSlices";
+import { uploadCoverPhotoAction} from "../../../redux/slices/users/userSlices";
 //Css for dropzone
 
 const Container = styled.div`
@@ -27,7 +27,7 @@ const formSchema = Yup.object({
   image: Yup.string().required("Image is required"),
 });
 
-export default function UploadProfilePhoto() {
+export default function UploadCoverPhoto() {
   const dispatch = useDispatch();
   const navigate= useNavigate()
   //formik
@@ -38,25 +38,23 @@ export default function UploadProfilePhoto() {
     },
     onSubmit: values => {
       //console.log(values);
-      dispatch(uploadProfilePhotoAction(values));
-   
+      dispatch(uploadCoverPhotoAction(values));
     },
     validationSchema: formSchema,
   });
 
   //store data
   const users = useSelector(state => state?.users) ;
-  const { profilePhoto, loading,appErr,serverErr, userAuth} = users
+  const { loading,appErr,serverErr, userAuth, coverPhoto} = users
 
-  if(profilePhoto){
+  if(coverPhoto){
     navigate(`/profile/${userAuth?._id}`);
   }
- 
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col justify-center py-12 sm:px-10 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 font-serif">
-          Upload Profile Photo
+          Upload Cover Photo
         </h2>
         {/* Displya err here */}
       </div>

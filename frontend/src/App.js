@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import Profile from "./components/Users/Profile/Profile";
 import UploadProfilePhoto from "./components/Users/Profile/UploadProfilePhoto";
+import UploadCoverPhoto from "./components/Users/Profile/UploadCoverPhoto";
 import UpdateProfileForm from "./components/Users/Profile/UpdateProfileForm";
 import AddNewCategory from "./components/Categories/AddNewCategory";
 import CategoryList from "./components/Categories/CategoryList";
@@ -27,6 +28,7 @@ import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswo
 import PageNotFound from "./components/PageNotFound";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import SavedPosts from "./components/Post/SavedPosts";
+
 
 
 function App() {
@@ -100,6 +102,15 @@ function App() {
             <UploadProfilePhoto/>
             </UserProtectedRoute>
           }/>
+
+
+        <Route path='/coverphoto-upload/:id' element={
+          <UserProtectedRoute>
+            <UploadCoverPhoto/>
+            </UserProtectedRoute>
+          }/>
+
+
           <Route path='/update-profile/:id' element={
           <UserProtectedRoute> 
             <UpdateProfileForm/>
