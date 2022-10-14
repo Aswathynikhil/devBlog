@@ -163,10 +163,13 @@ export default function Profile() {
                                 </button>
                               </p>
                               {/* Who view my profile */}
+                              
                               <div className="flex items-center  mb-2">
-                                <EyeIcon className="h-5 w-5 " />
+                              {isLoginUser ?
+                              <EyeIcon className="h-5 w-5 " />:null}
                                 <div className="pl-2">
-                                  {isLoginUser && (
+                                  {isLoginUser &&(
+                                    
                                     <button
                                       onClick={() => {
                                         setData(profile?.viewedBy);
@@ -178,7 +181,10 @@ export default function Profile() {
                                       {profile?.viewedBy?.length} Profile
                                       Viewers
                                     </button>
-                                  )}
+
+                                  )
+                                  
+                                  }
 
                                   {/* {profile?.viewedBy?.length} */}
                                   {/* <ProfileViewed/> */}
@@ -187,11 +193,11 @@ export default function Profile() {
 
                               {/* is login user */}
                               {/* Upload profile photo */}
-
+                              <div className="flex items-center  mb-2">
                               {isLoginUser && (
                                 <Link
                                   to={`/profilephoto-upload/${profile?._id}`}
-                                  className="ml-2 inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                                  className=" inline-flex justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                                 >
                                   <UploadIcon
                                     className="-ml-1 mr-2 h-5 w-5 text-white-400 shadow-md shadow-gray-50"
@@ -214,6 +220,7 @@ export default function Profile() {
                                   <span>Update Profile</span>
                                 </Link>
                               )}
+                              </div>
                             </div>
 
                             <div className="mt-8 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
