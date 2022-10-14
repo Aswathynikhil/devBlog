@@ -261,21 +261,33 @@ const toggleAddDislikeToPostController = expressAsyncHandler(
   }
 );
 
-// //-------------report---------------
-// const reportPostController = expressAsyncHandler(async(req,res) =>{
-//   const {postId} = req.body;
-//   validateMongodbId(postId);
+// //-------------report a post---------------
+const reportPostController = expressAsyncHandler(async(req,res) =>{
+  //find the post to report
+  const { postId } = req.body;
+  const post = await Post.findById(postId);
 
-// await Post.findByIdAndUpdate(
-//     postId,
-//     {
-//       $inc: { report: 1 },
-//     },
-//     {
-//       new: true,
-//     })
 
-//  })
+   //find the login user
+   const loginUserId = req?.user?._id;
+   const reportUserId = post?.reports?.includes(loginUserId)
+     //find the user has reported this post ?
+    const isReported = post?.isReported;
+    if (!isReported || !reportUserId ) {
+      const post = await Post.findByIdAndUpdate(
+        postId,
+        {
+          $push: { reports: loginUserId },
+          isReported: true,
+        },
+        { new: true }
+      );
+      res.json(post);
+    }else{
+      res.json(post)
+    }
+
+ })
 
 // -------------------save posts------------------------
 const savePostController = expressAsyncHandler(async (req, res) => {
@@ -355,4 +367,5 @@ module.exports = {
   savePostController,
   fetchSavedPostController,
   deleteSavedPostController,
+  reportPostController
 };

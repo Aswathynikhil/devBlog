@@ -58,6 +58,7 @@ const userSchema=new mongoose.Schema({
         type:Boolean,
         default:false
     },
+ 
     accountVerificationToken: String,
     accountVerificationExpires: Date,
     viewedBy:{
@@ -84,6 +85,7 @@ const userSchema=new mongoose.Schema({
             },
         ],
     },
+  
     passwwordChangedAt:Date,
     passwordResetToken:String,
     passwordResetExpires:Date,

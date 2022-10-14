@@ -495,6 +495,7 @@ const coverPhotoUploadController = expressAsyncHandler(async (req, res) => {
   res.json(imgUploaded);
 });
 
+
 module.exports = {
   userRegisterController,
   userLoginController,

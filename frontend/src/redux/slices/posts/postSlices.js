@@ -252,6 +252,37 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
       }
     )
 
+
+    //Report a post
+
+export const reportPostAction = createAsyncThunk(
+  "post/report",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //get user token
+    const user = getState()?.users;
+    const { userAuth } = user;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userAuth?.token}`,
+      },
+    };
+    try {
+      const { data } = await axiosInstance.post(
+        `/api/posts/report-post`,
+        { postId },
+        config
+      );
+
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+
+
     //------------slices-------
 
     const postSlice =createSlice({
@@ -462,6 +493,26 @@ export const toggleAddDislikesToPostAction = createAsyncThunk(
           state.appErr= action?.payload?.message;
           state.serverErr=action?.error?.message;
       })
+
+        //--------------post report
+
+         
+        builder.addCase(reportPostAction.pending, (state,action)=>{
+          state.loading = true;
+      })
+    
+      builder.addCase(reportPostAction.fulfilled, (state,action)=>{
+          state.reports =action?.payload;
+          state.loading = false;
+          state.appErr = undefined;
+          state.serverErr = undefined;
+      })
+      builder.addCase(reportPostAction.rejected, (state,action)=>{
+          state.loading = false;
+          state.appErr= action?.payload?.message;
+          state.serverErr=action?.error?.message;
+      })
+
 
           }
     })

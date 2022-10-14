@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { ThumbUpIcon, ThumbDownIcon, EyeIcon } from "@heroicons/react/solid";
-import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import { ThumbUpIcon, ThumbDownIcon, EyeIcon,FlagIcon } from "@heroicons/react/solid";
+
+import { FaRegBookmark, FaBookmark ,FaFlag,FaRegFlag} from "react-icons/fa";
 import { toast, Toaster } from "react-hot-toast";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +14,7 @@ import {
   deleteSavedPostAction,
   savedPostAction,
   fetchSavedPostAction,
+  reportPostAction,
 } from "../../redux/slices/posts/postSlices";
 
 import DateFormatter from "../../utils/DateFormatter";
@@ -45,6 +47,7 @@ export default function PostsList() {
     savedList,
     saved,
     deleted,
+    reports
   } = posts;
   console.log(savedList, "bbbbbbbbbbbb");
 
@@ -62,6 +65,8 @@ export default function PostsList() {
     serverErr: catServerErr,
   } = category;
   console.log(categoryList);
+
+ 
   // fetch post
   useEffect(() => {
     dispatch(fetchAllPostAction(""));
@@ -74,7 +79,7 @@ export default function PostsList() {
     // else {
     //   navigate("/login");
     // }
-  }, [dispatch, likes, dislikes, saved, deleted, savedPost]);
+  }, [dispatch, likes, dislikes, saved, deleted, savedPost,reports]);
 
   // fetch category
   useEffect(() => {
@@ -197,6 +202,7 @@ export default function PostsList() {
                         }
                       })
                       ?.map((post) => (
+                        
                         <div class="flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
                           <div class=" mb-10 w-full h-41 lg:w-1/4 px-8 py-8 p-20">
                             <Link>
@@ -208,7 +214,7 @@ export default function PostsList() {
                               />
                             </Link>
                             {/* Likes, views dislikes */}
-                            <div className="p-1 flex flex-row bg-gray-300 justify-center w-full  items-center ">
+                            <div className="p-4 flex flex-row bg-gray-300 justify-center w-full  items-center ">
                               {/* Likes */}
                               <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
                                 {/* Toggle like  */}
@@ -229,7 +235,7 @@ export default function PostsList() {
                                           deleteSavedPostAction(post?._id)
                                         );
                                       }}
-                                      className=" h-5 w-5 text-blue-600 cursor-pointer"
+                                      className=" h-4 w-4 text-blue-600 cursor-pointer"
                                     />
                                   ) : (
                                     <FaRegBookmark
@@ -239,7 +245,7 @@ export default function PostsList() {
                                         );
                                         dispatch(savedPostAction(post?._id));
                                       }}
-                                      className="h-5 w-5 text-black-600 cursor-pointer"
+                                      className=" h-4 w-4 text-gray-500 cursor-pointer"
                                     />
                                   )}
                                 </div>
@@ -255,7 +261,7 @@ export default function PostsList() {
                                       className=" h-5 w-5 text-blue-600 cursor-pointer"
                                     />
                                   </div>
-                                ) : (
+                                 ) : (
                                   <div className="ml-4">
                                     <ThumbUpIcon
                                       onClick={() =>
@@ -268,14 +274,14 @@ export default function PostsList() {
                                   </div>
                                 )}
 
-                                <div className="text-gray-600">
+                                <div className="text-gray-600 ">
                                   {post?.likes?.length
                                     ? post?.likes?.length
                                     : 0}
                                 </div>
                               </div>
                               {/* Dislike */}
-                              <div className="flex flex-row  justify-center items-center ml-4 mr-4 pb-2 pt-1 ">
+                              <div className="flex flex-row  justify-center items-center  mr-4 pb-2 pt-1 ">
                                 {post?.disLikes.includes(userAuth?._id) ? (
                                   <div>
                                     <ThumbDownIcon
@@ -311,7 +317,7 @@ export default function PostsList() {
                                 </div>
                               </div>
                               {/* Views */}
-                              <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
+                              <div className="flex flex-row justify-center items-center  mr-4 pb-2 pt-1">
                                 <div>
                                   <EyeIcon className="h-5 w-5  text-gray-400" />
                                 </div>
@@ -319,6 +325,48 @@ export default function PostsList() {
                                   {post?.numViews}
                                 </div>
                               </div>
+                               {/* reports */}
+                               {/* <div className="flex flex-row justify-center items-center  mr-4 pb-2 pt-1">
+                                <div>
+                                  <FlagIcon className="h-5 w-5  text-gray-400" />
+                                </div>
+                                <div className=" text-gray-600">
+                                  {post?.reports?.length}
+                                </div>
+                              </div> */}
+
+                               { post?.reports?.includes(userAuth?._id) ? (
+                                  <div className="">
+                                    
+                                    <FaFlag
+                                      // onClick={() =>
+                                      //   dispatch(
+                                      //     toggleAddLikesToPostAction(post?._id)
+                                      //   )
+                                      // }
+                                      className=" h-5 w-5 text-black-600 cursor-pointer"
+                                    />
+                                  </div>
+                                 ) : (
+                                  <div className="">
+                                    <FaRegFlag
+                                      onClick={() =>
+                                        dispatch(
+                                          reportPostAction(post?._id)
+                                        )
+                                      }
+                                      className=" h-5 w-5 text-gray-600 cursor-pointer"
+                                    />
+                                  </div>
+                                  
+                                )}
+                               <div className="text-gray-600 ">
+                                  {post?.reports?.length
+                                    ? post?.reports?.length
+                                    : 0}
+                                </div>
+
+
                             </div>
                           </div>
 

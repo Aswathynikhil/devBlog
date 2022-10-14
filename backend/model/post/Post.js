@@ -21,9 +21,9 @@ const postSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    reportCount: {
-      type: Number,
-      default: 0,
+    isReported: {
+      type: Boolean,
+      default: false,
     },
     numViews: {
       type: Number,
@@ -42,6 +42,14 @@ const postSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+  reports:{
+      type:[
+          {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User'
+          },
+      ],
+  },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

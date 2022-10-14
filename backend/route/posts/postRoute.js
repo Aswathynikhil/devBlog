@@ -8,7 +8,8 @@ const { createPostController,
      toggleAddDislikeToPostController,
      savePostController,
      fetchSavedPostController,
-     deleteSavedPostController} = require('../../controllers/posts/postController');
+     deleteSavedPostController,
+     reportPostController} = require('../../controllers/posts/postController');
 
 const authMiddleware = require('../../middlewares/auth/authMiddleware');
 const { photoUpload ,postImageResize} = require('../../middlewares/uploads/photoUpload');
@@ -16,6 +17,8 @@ const  postRoute = express.Router();
 
 postRoute.put('/likes',authMiddleware,toggleAddLikeToPostController)
 postRoute.put('/dislikes',authMiddleware,toggleAddDislikeToPostController)
+postRoute.post("/report-post",authMiddleware, reportPostController);
+
 postRoute.post("/",authMiddleware,  photoUpload.single("image"),postImageResize ,createPostController);
 postRoute.get("/",fetchPostController);
 
@@ -26,6 +29,6 @@ postRoute.delete("/saved/:id",authMiddleware,deleteSavedPostController);
 postRoute.get("/:id",fetchSinglePostController);
 postRoute.put("/:id",authMiddleware, updatePostController)
 postRoute.delete("/:id",authMiddleware, deletePostContoller)
-// postRoute.post("/:id",reportPostController);
+
 
 module.exports = postRoute;
