@@ -28,6 +28,7 @@ import ResetPasswordForm from "./components/Users/PasswordManagement/ResetPasswo
 import PageNotFound from "./components/PageNotFound";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import SavedPosts from "./components/Post/SavedPosts";
+import ReportedPost from "./components/Post/ReportedPost";
 
 
 
@@ -43,7 +44,6 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
-
           <Route path='/saved-list' element={<SavedPosts />} />
 
           <Route element={<AdminProtectedRoute />}>
@@ -51,6 +51,7 @@ function App() {
           <Route path='/send-mail' element={ <SendEmail/> }/>
 
           <Route path='/users' element={ <UsersList/> }/>
+          <Route path='/reported-list' element={ <ReportedPost/> }/>
 
           <Route path='/add-category' element={<AddNewCategory/>}/>
          

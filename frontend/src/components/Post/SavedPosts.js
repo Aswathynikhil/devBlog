@@ -9,14 +9,12 @@ import {
   toggleAddLikesToPostAction,
 } from "../../redux/slices/posts/postSlices";
 import noPosts from "../../img/noPosts.png";
-import LoadingComponent from "../../utils/LoadingComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import * as DOMPurify from "dompurify";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import alert css
-import { toast, Toaster } from "react-hot-toast";
-import DateFormatter from "../../utils/DateFormatter";
+
 
 export default function SavedPosts() {
   const [search, setSearch] = useState("");

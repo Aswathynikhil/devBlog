@@ -78,13 +78,13 @@ const fetchPostController = expressAsyncHandler(async (req, res) => {
   try {
     // check if it has a category
     if (hasCategory) {
-      const posts = await Post.find({ category: hasCategory })
+      const posts = await Post.find({ category: hasCategory, isBlocked:false})
         .populate("user")
         .populate("comments")
         .sort("-createdAt");
       res.json(posts);
     } else {
-      const posts = await Post.find({})
+      const posts = await Post.find({isBlocked:false})
         .populate("user")
         .populate("comments")
         .sort("-createdAt");
@@ -289,6 +289,17 @@ const reportPostController = expressAsyncHandler(async(req,res) =>{
 
  })
 
+
+ //--------fetch reported posts---------------
+const fetchReportedPostController = expressAsyncHandler(async (req, res) => {
+  try {
+    const posts = await Post.find({isReported:true }).populate('user');
+    res.json(posts);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
 // -------------------save posts------------------------
 const savePostController = expressAsyncHandler(async (req, res) => {
   const { id } = req.body;
@@ -356,6 +367,26 @@ const deleteSavedPostController = expressAsyncHandler(async (req, res) => {
   }
 });
 
+
+//-------------Block post---------------
+const blockPostController = expressAsyncHandler(async (req, res) => {
+  const { postId } = req.body;
+
+  const post = await Post.findByIdAndUpdate(
+    postId,
+    {
+      isBlocked: true,
+    },
+    {
+      new: true,
+    }
+  );
+  res.json(post);
+});
+
+
+
+
 module.exports = {
   createPostController,
   fetchPostController,
@@ -367,5 +398,7 @@ module.exports = {
   savePostController,
   fetchSavedPostController,
   deleteSavedPostController,
-  reportPostController
+  reportPostController,
+  fetchReportedPostController,
+  blockPostController
 };

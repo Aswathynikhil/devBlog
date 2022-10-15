@@ -25,11 +25,14 @@ const postSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isBlocked:{
+      type: Boolean,
+      default: false,
+    },
     numViews: {
       type: Number,
       default: 0,
     },
-
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,

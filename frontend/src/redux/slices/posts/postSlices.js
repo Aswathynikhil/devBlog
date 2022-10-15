@@ -281,7 +281,40 @@ export const reportPostAction = createAsyncThunk(
   }
 );
 
+ //-------reported posts list------------
 
+ export const fetchReportedPostAction = createAsyncThunk(
+  "/posts/reported-list", async(id,{ rejectWithValue,getState,dispatch})=>{
+  
+   try {
+     const {data} =await axiosInstance.get('/api/posts/reported-list')
+     console.log(data,"data");
+     return data;
+   } catch (error) {
+     if (!error?.response) throw error;
+     return rejectWithValue(error?.response?.data);
+   }
+  }
+)
+
+//Block post
+export const blockPostAction = createAsyncThunk(
+  "post/block",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+
+    try {
+      const { data } = await axiosInstance.post(
+        `/api/posts/block-post`,
+        {postId},
+   
+      );
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error;
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
 
     //------------slices-------
 
@@ -514,6 +547,42 @@ export const reportPostAction = createAsyncThunk(
       })
 
 
+            //------fetch reported posts-------------------
+      
+          builder.addCase(fetchReportedPostAction.pending, (state,action)=>{
+              state.loading = true;
+          })
+        
+          builder.addCase(fetchReportedPostAction.fulfilled, (state,action)=>{
+            console.log(action?.payload,"action");
+            state.reported = true
+            state.reportedList = action?.payload;
+            state.loading = false;
+            state.appErr = undefined;
+            state.serverErr = undefined;
+          })
+          builder.addCase(fetchReportedPostAction.rejected, (state,action)=>{
+              state.loading = false;
+              state.appErr= action?.payload?.message;
+              state.serverErr=action?.error?.message;
+          })
+            //block - post
+    builder.addCase(blockPostAction.pending, (state, action) => {
+      state.loading = true;
+      state.appErr = undefined;
+      state.serverError = undefined;
+    });
+    builder.addCase(blockPostAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.blockPost = action?.payload;
+      state.appErr = undefined;
+      state.serverError = undefined;
+    });
+    builder.addCase(blockPostAction.rejected, (state, action) => {
+      state.loading = false;
+      state.appErr = action?.payload?.message;
+      state.serverError = action?.error?.message;
+    });
           }
     })
      export default postSlice.reducer;

@@ -42,7 +42,7 @@ const CategoryList = () => {
             Category List
           </div>
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8 mt-5 bg-gray-200">
-              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg ">
                 <table className=" min-w-full  divide-y divide-gray-200">
                   <thead className="bg-gray-200">
                     <tr>

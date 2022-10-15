@@ -50,7 +50,7 @@ export default function Profile() {
   //  })
 
   const [data, setData] = useState([]);
-  const [displayData, setDisplayData] = useState("My Followers");
+  const [displayData, setDisplayData] = useState("Followers");
   const [number, setNumber] = useState(0);
 
   //isLogin
@@ -144,20 +144,20 @@ export default function Profile() {
                                 <button
                                   onClick={() => {
                                     setData(profile?.followers);
-                                    setDisplayData("My Followers");
+                                    setDisplayData("Followers");
                                     setNumber(profile?.followers?.length);
                                   }}
-                                  className="cursor-pointer  text-blue-600 mt-2 mb-2 py-1  px-1 border rounded-lg hover:bg-gray-100  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 "
+                                  className="cursor-pointer  text-blue-600 mt-2 mb-2 py-1    "
                                 >
                                   {profile?.followers?.length} Followers
                                 </button>
                                 <button
                                   onClick={() => {
                                     setData(profile?.following);
-                                    setDisplayData("Folloing Profiles");
+                                    setDisplayData("Following Users");
                                     setNumber(profile?.following?.length);
                                   }}
-                                  className="cursor-pointer  text-blue-600 mt-2 mb-2 py-1  px-1 border rounded-lg hover:bg-gray-100  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 "
+                                  className="cursor-pointer  text-blue-600 mt-2 mb-2 py-1     "
                                 >
                                   {profile?.following?.length} Following
                                 </button>
@@ -309,7 +309,7 @@ export default function Profile() {
                           {displayData} :{" "}
                           {number
                             ? number
-                            : displayData === "My Followers"
+                            : displayData ==="Followers"
                             ? profile?.followers?.length
                             : 0}
                         </h1>
@@ -346,7 +346,7 @@ export default function Profile() {
 
                         <div className="bg-gray-200 p-10 border-none rounded-xl mb-10">
                           <ul className="">
-                            {data?.length <= 0 && displayData === "My Followers"
+                            {data?.length <= 0 && displayData === "Followers"
                               ? profile?.followers?.map((user) => (
                                   <li>
                                     <Link to={`/profile/${user?._id}`}>
@@ -381,8 +381,8 @@ export default function Profile() {
                                   </li>
                                 ))
                               : data?.length <= 0 &&
-                                displayData !== "My Followers"
-                              ? "No Users"
+                                displayData !== "Followers"
+                              ? <div className="font-serif text-gray-500 text-center">No users</div>
                               : data?.map((user) => (
                                   <li>
                                     <Link to={`/profile/${user?._id}`}>
