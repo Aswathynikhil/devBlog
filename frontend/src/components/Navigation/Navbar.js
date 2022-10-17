@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import AdminSidebar from "../Admin/AdminSidebar";
 import AdminNavbar from "./Admin/AdminNavbar";
 import AccountVerificationAlertWarning from "./Alerts/AccountVerificationAlertWarning";
 import AccountVerificationSuccessAlert from "./Alerts/AccountVerificationSuccessAlert";
 import PrivateNavbar from "./Private/PrivateNavbar";
 import PublicNavbar from "./Public/PublicNavbar";
+
 
 const Navbar = () => {
   //-----get user from store--------
@@ -16,7 +18,10 @@ const Navbar = () => {
   return (
     <>
       {isAdmin ? (
+      <>
         <AdminNavbar isLogin={userAuth} />
+      {/* <AdminSidebar/> */}
+       </> 
       ) : userAuth ? (
         <PrivateNavbar isLogin={userAuth} />
       ) : (

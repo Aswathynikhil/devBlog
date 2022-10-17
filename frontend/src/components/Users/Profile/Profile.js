@@ -59,6 +59,7 @@ export default function Profile() {
 
   return (
     <>
+   <section className="min-h-screen bg-white">
       <div className=" bg-white ">
         {profileLoading ? (
           <LoadingComponent />
@@ -67,12 +68,12 @@ export default function Profile() {
             {profileAppErr} {profileServerErr}
           </h2>
         ) : (
-          <div className="h-screen flex overflow-hidden bg-gray-200">
+          <div className="h-full flex overflow-hidden bg-gray-200">
             {/* Static sidebar for desktop */}
 
             <div className="flex flex-col min-w-0 flex-1 overflow-hidden">
-              <div className="flex-1 relative z-0 flex overflow-hidden ">
-                <main className="flex-1 relative z-0 overflow-y-auto focus:outline-none xl:order-last">
+              <div className="flex-1 relative z-0 flex ">
+                <main className="flex-1 overflow-y-auto focus:outline-none xl:order-lastt">
                   <article>
                     {/* Profile header */}
                     <div>
@@ -485,6 +486,7 @@ export default function Profile() {
           </div>
         )}
       </div>
+      </section>
     </>
   );
 }

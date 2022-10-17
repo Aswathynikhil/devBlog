@@ -9,6 +9,7 @@ import login1 from '../../../img/login1.png'
 import login2 from '../../../img/login2.png'
 import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import { useEffect } from "react";
 
 //Form schema
 const formSchema = Yup.object({
@@ -47,9 +48,21 @@ const Login = () => {
 
   //redirect
 
-  if (userAuth) {
-    navigate("/posts");
-  }
+  // if (userAuth) {
+  //   navigate("/posts");
+  // }
+
+
+    //redirect
+    useEffect(() => {
+      if (userAuth?.isAdmin) {
+        //console.log(userAuth);
+        navigate("/");
+      }
+      if (userAuth?.isAdmin === false) {
+        navigate("/posts");
+      }
+    }, [userAuth, navigate]);
   return (
     <>
       <section className="min-h-screen  py-20 2xl:py-40 bg-gray-200 overflow-hidden">

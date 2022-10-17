@@ -7,16 +7,20 @@ import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
 import {
   deletePostAction,
+  deleteSavedPostAction,
+  fetchSavedPostAction,
   fetchSinglePostDetailsAction,
-  
+  reportPostAction,
+  savedPostAction,
 } from "../../redux/slices/posts/postSlices";
+import { toast, Toaster } from "react-hot-toast";
 import DateFormatter from "../../utils/DateFormatter";
 import LoadingComponent from "../../utils/LoadingComponent";
 import AddComment from "../Comments/AddComments";
 import CommentsList from "../Comments/CommentsList";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import alert css
-import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import { FaRegBookmark, FaBookmark, FaFlag, FaRegFlag } from "react-icons/fa";
 
 const PostDetails = () => {
   const navigate = useNavigate();
@@ -25,8 +29,19 @@ const PostDetails = () => {
   const dispatch = useDispatch();
   //select post details from store
   const post = useSelector((state) => state?.post);
-  const { postDetails, loading, appErr, serverErr, isDeleted  } = post;
-
+  const {
+    postDetails,
+    loading,
+    appErr,
+    serverErr,
+    isDeleted,
+    savedList,
+    savedPost,
+    deleted,
+    saved,
+    reports,
+  } = post;
+  console.log(savedList, "hgjk");
   //get login user
   const user = useSelector((state) => state?.users);
   const { userAuth } = user;
@@ -59,9 +74,22 @@ const PostDetails = () => {
 
   useEffect(() => {
     dispatch(fetchSinglePostDetailsAction(id));
-  }, [id, dispatch, commentCreated, commentDeleted,]);
+    dispatch(fetchSavedPostAction(""));
+    dispatch(deletePostAction(""));
+  }, [
+    id,
+    dispatch,
+    commentCreated,
+    commentDeleted,
+    savedPost,
+    deleted,
+    saved,
+    reports,
+  ]);
 
-
+  const tostAlert = (msg) => {
+    toast.success(msg);
+  };
   if (isDeleted) return <Navigate to="/posts" />;
 
   if (!userAuth) return <Navigate to="/login" />;
@@ -135,7 +163,68 @@ const PostDetails = () => {
                         <TrashIcon class="h-8 mt-3 text-black-600 " />
                       </button>
                     </p>
-                  ) : null}
+                  ) : (
+                    <div className="flex justify-center p-5">
+                      <div className="mr-3 mt-5">
+                        {savedList &&
+                        savedList[0]?.post?.find(
+                          (element) =>
+                            element?._id.toString() ===
+                            postDetails?._id.toString()
+                        ) ? (
+                          <>
+                          <FaBookmark
+                            onClick={() => {
+                              tostAlert(
+                                `${postDetails?.title} unsaved successfully`
+                              );
+                              dispatch(deleteSavedPostAction(postDetails?._id));
+                            }}
+                            className=" h-5 w-5 text-blue-600 cursor-pointer"
+                          /><p className="text-xs">Unsave</p></>
+                        ) : (
+                        <>
+                          <FaRegBookmark
+                            onClick={() => {
+                              tostAlert(
+                                `${postDetails?.title} saved successfully`
+                              );
+                              dispatch(savedPostAction(postDetails?._id));
+                            }}
+                            className=" h-5 w-5 text-black-900 cursor-pointer"
+                          /><p className="text-xs">Save</p></>
+                        )}
+                      </div>
+                       <div className="ml-3">
+                      {postDetails?.reports?.includes(userAuth?._id) ? (
+                        <div className="">
+                          <FaFlag className=" h-6 w-6 text-black-900 cursor-pointer" />
+                        </div>
+                      ) : (
+                        <div className="flex">
+                        <div className="flex-1">
+                          <FaRegFlag
+                            onClick={() =>
+                              dispatch(reportPostAction(postDetails?._id))
+                            }
+                            className=" mt-4 h-6 w-6 text-black-900 cursor-pointer"
+                          /><p className="text-xs">Report</p>
+                          
+                        </div>
+                        <div className="p-2 text-gray-600 flex-1 ">
+                        {postDetails?.reports?.length
+                          ? postDetails?.reports?.length
+                          : 0}
+                      </div>
+                      </div>
+                      )
+                      }
+                      
+                    
+                    </div>
+                  </div>
+                  )
+                  }
                 </p>
               </div>
             </div>
@@ -145,6 +234,7 @@ const PostDetails = () => {
           <div className="flex justify-center  items-center ">
             <CommentsList comments={postDetails?.comments} postId={post?._id} />
           </div>
+          <Toaster position="top-center" reverseOrder={false} />
         </section>
       )}
     </>

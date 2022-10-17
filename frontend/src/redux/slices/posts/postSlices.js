@@ -316,6 +316,23 @@ export const blockPostAction = createAsyncThunk(
   }
 );
 
+//-----------------------------search a post ------------------------------
+
+//search
+export const searchPostAction = createAsyncThunk(
+  "post/searchPost",
+  async (query, { rejectWithValue, getState, dispatch }) => {
+    try {
+      const { data } = await axiosInstance.get(`/api/posts/search-post/?q=${query}`)
+      return data;
+    } catch (error) {
+      if (!error?.response) throw error
+      let message = (error?.response?.data?.message) ? (error?.response?.data?.message) : (error?.response?.data)
+      return rejectWithValue(message)
+    }
+  }
+);
+
     //------------slices-------
 
     const postSlice =createSlice({
@@ -582,6 +599,22 @@ export const blockPostAction = createAsyncThunk(
       state.loading = false;
       state.appErr = action?.payload?.message;
       state.serverError = action?.error?.message;
+    });
+
+    //search post 
+    builder.addCase(searchPostAction.pending, (state, action) => {
+      state.searchLoading = true;
+    });
+    builder.addCase(searchPostAction.fulfilled, (state, action) => {
+      state.postLists = action?.payload;
+      state.searchLoading = false;
+      state.appErr = undefined;
+      state.serverErr = undefined;
+    });
+    builder.addCase(searchPostAction.rejected, (state, action) => {
+      state.searchLoading = false;
+      state.appErr = action?.payload
+      state.serverErr = action?.error?.message;
     });
           }
     })

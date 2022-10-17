@@ -383,7 +383,22 @@ const blockPostController = expressAsyncHandler(async (req, res) => {
   );
   res.json(post);
 });
-
+//--------------------------------search a post--------------------------------
+const searchPostController = expressAsyncHandler(async (req, res) => {
+  const query = req.query.q
+  try {
+    const posts = await Post.find({
+      $or: [
+        { title: { $regex: new RegExp("^" + query + ".*", "i") } },
+        { description: { $regex: new RegExp("^" + query + ".*", "i") } },
+        { category: { $regex: new RegExp("^" + query + ".*", "i") } },
+      ],
+    })
+    res.status(200).json(posts)
+  } catch (error) {
+    throw new Error(error.message)
+  }
+})
 
 
 
@@ -400,5 +415,6 @@ module.exports = {
   deleteSavedPostController,
   reportPostController,
   fetchReportedPostController,
-  blockPostController
+  blockPostController,
+  searchPostController
 };

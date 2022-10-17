@@ -11,7 +11,8 @@ const { createPostController,
      deleteSavedPostController,
      reportPostController,
      fetchReportedPostController,
-     blockPostController} = require('../../controllers/posts/postController');
+     blockPostController,
+     searchPostController} = require('../../controllers/posts/postController');
     
 
 const authMiddleware = require('../../middlewares/auth/authMiddleware');
@@ -23,6 +24,7 @@ postRoute.put('/dislikes',authMiddleware,toggleAddDislikeToPostController)
 postRoute.post("/report-post",authMiddleware, reportPostController);
 postRoute.get("/reported-list",fetchReportedPostController);
 postRoute.post("/block-post",blockPostController);
+postRoute.get("/search-post",searchPostController);
 
 postRoute.post("/",authMiddleware,  photoUpload.single("image"),postImageResize ,createPostController);
 postRoute.get("/",fetchPostController);

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { ThumbUpIcon, ThumbDownIcon, EyeIcon,FlagIcon } from "@heroicons/react/solid";
+import {
+  ThumbUpIcon,
+  ThumbDownIcon,
+  EyeIcon,
+  FlagIcon,
+} from "@heroicons/react/solid";
 
-import { FaRegBookmark, FaBookmark ,FaFlag,FaRegFlag} from "react-icons/fa";
+import { FaRegBookmark, FaBookmark, FaFlag, FaRegFlag } from "react-icons/fa";
 import { toast, Toaster } from "react-hot-toast";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -15,16 +20,20 @@ import {
   savedPostAction,
   fetchSavedPostAction,
   reportPostAction,
+  searchPostAction,
 } from "../../redux/slices/posts/postSlices";
 
 import DateFormatter from "../../utils/DateFormatter";
 import { fetchAllCategoriesAction } from "../../redux/slices/category/categorySlices";
 import LoadingComponent from "../../utils/LoadingComponent";
 import noPosts from "../../img/noPosts.png";
+import noPosts1 from "../../img/noPosts1.png";
+import AdminSidebar from "../Admin/AdminSidebar";
 // import LazyLoad from 'react-lazyload'
 
 export default function PostsList() {
-  const [search, setSearch] = useState("");
+  // const [search, setSearch] = useState("");
+  const [query, setQuery] = useState(' ')
   //dispatch
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -47,9 +56,9 @@ export default function PostsList() {
     savedList,
     saved,
     deleted,
-    reports
+    reports,
   } = posts;
-  console.log(savedList, "bbbbbbbbbbbb");
+  console.log(postLists, "bbbbbbbbbbbb");
 
   // const blogsPerPage = 10;
   // const pagesVisited = pageNumber * blogsPerPage;
@@ -66,11 +75,11 @@ export default function PostsList() {
   } = category;
   console.log(categoryList);
 
- 
   // fetch post
   useEffect(() => {
     dispatch(fetchAllPostAction(""));
     dispatch(fetchSavedPostAction(""));
+    dispatch(searchPostAction(query))
     //load all the posts from server
     // if (userAuth) {
     //   dispatch(fetchAllPostAction(""));
@@ -79,7 +88,7 @@ export default function PostsList() {
     // else {
     //   navigate("/login");
     // }
-  }, [dispatch, likes, dislikes, saved, deleted, savedPost,reports]);
+  }, [dispatch, likes, dislikes, saved, deleted, savedPost, reports,query]);
 
   // fetch category
   useEffect(() => {
@@ -89,6 +98,24 @@ export default function PostsList() {
   const tostAlert = (msg) => {
     toast.success(msg);
   };
+
+  // const menus = [
+  //   { name: "Home", link: "/", icon: SiHomeassistantcommunitystore },
+  //   { name: "Users", link: "/users", icon: AiOutlineUser },
+  //   { name: "Post", link: "/posts", icon: BsFileEarmarkPostFill },
+  //   { name: "Saved", link: "/saved-list", icon: BsSave, margin: true },
+  //   { name: "Reported", link: "/reported-list", icon: GoReport },
+  //   {
+  //     name: "Create Category",
+  //     link: "/add-category",
+  //     icon: AiOutlineAppstoreAdd,
+  //   },
+  //   { name: "Category List", link: "/category-list", icon: MdOutlineDashboard },
+  //   { name: "Create Post", link: "/create-post", icon: IoIosCreate },
+  // ];
+
+  // const [open, setOpen] = useState(true);
+
   return (
     <>
       <section>
@@ -98,7 +125,7 @@ export default function PostsList() {
               <div className="flex border border-gray-300 rounded">
                 <input
                   onChange={(event) => {
-                    setSearch(event.target.value);
+                    setQuery(event.target.value.toLowerCase());
                   }}
                   type="text"
                   className="block w-96 px-4 py-2 text-black-700 bg-white border rounded-md focus:border-gray-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -109,7 +136,6 @@ export default function PostsList() {
                 </button>
               </div>
             </div>
-
             <div class="mb-20 flex flex-wrap items-center">
               <div class="w-full lg:w-1/2  ">
                 <span class="text-black-600 font-bold font-serif text-blue-400">
@@ -175,35 +201,34 @@ export default function PostsList() {
                     </h1>
                   ) : postLists?.length <= 0 ? (
                     <div className="">
-                      <div className="">
+                      <div className="p-5 justify-center">
                         <Link
                           to="/create-post"
                           className="pr-3mr-2 px-4 py-2 border border-transparent shadow-lg shadow-gray-400 text-sm font-medium rounded-md text-white bg-gray-800  hover:bg-gray-700  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-gray-500"
                         >
-                          <span>Creat New Post</span>
+                          <span className="">Creat New Post</span>
                         </Link>
                       </div>
 
                       <div className="max-w-screen-lg mx-auto pb-10 flex justify-center  ">
-                        <img className="w-full" src={noPosts} alt={noPosts} />
+                        <img className="w-96 h-96" src={noPosts1} alt={noPosts} />
                       </div>
                     </div>
                   ) : (
-                    postLists
-                      ?.filter((val) => {
-                        if (search === "") {
-                          return val;
-                        } else if (
-                          val.title
-                            .toLowerCase()
-                            .includes(search.toLocaleLowerCase())
-                        ) {
-                          return val;
-                        }
-                      })
+                    postLists 
+                      // ?.filter((val) => {
+                      //   if (search === "") {
+                      //    return val;
+                      //   } else if (
+                      //     val.title
+                      //       .toLowerCase()
+                      //       .includes(search.toLocaleLowerCase())
+                      //   ) {
+                      //     return val;
+                      //   }
+                      // })
                       ?.map((post) => (
-                        
-                        <div class="flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
+                        <div class="mt-5 flex flex-wrap bg-gray-300 -mx-3  lg:mb-6 shadow-md shadow-gray-500 ">
                           <div class=" mb-10 w-full h-41 lg:w-1/4 px-8 py-8 p-20">
                             <Link>
                               {/* Post image */}
@@ -217,7 +242,7 @@ export default function PostsList() {
                             <div className="p-4 flex flex-row bg-gray-300 justify-center w-full  items-center ">
                               {/* Likes */}
                               <div className="flex flex-row justify-center items-center ml-4 mr-4 pb-2 pt-1">
-                                {/* Toggle like  */}
+                                {/* save option 
 
                                 <div className="">
                                   {savedList &&
@@ -248,7 +273,7 @@ export default function PostsList() {
                                       className=" h-4 w-4 text-gray-500 cursor-pointer"
                                     />
                                   )}
-                                </div>
+                                </div> */}
 
                                 {post?.likes.includes(userAuth?._id) ? (
                                   <div className="ml-4">
@@ -261,7 +286,7 @@ export default function PostsList() {
                                       className=" h-5 w-5 text-blue-600 cursor-pointer"
                                     />
                                   </div>
-                                 ) : (
+                                ) : (
                                   <div className="ml-4">
                                     <ThumbUpIcon
                                       onClick={() =>
@@ -325,48 +350,31 @@ export default function PostsList() {
                                   {post?.numViews}
                                 </div>
                               </div>
-                               {/* reports */}
-                               {/* <div className="flex flex-row justify-center items-center  mr-4 pb-2 pt-1">
-                                <div>
-                                  <FlagIcon className="h-5 w-5  text-gray-400" />
+                              {/* reports */}
+                    
+{/* 
+                              {post?.reports?.includes(userAuth?._id) ? (
+                                <div className="">
+                                  <FaFlag
+                                
+                                    className=" h-5 w-5 text-black-600 cursor-pointer"
+                                  />
                                 </div>
-                                <div className=" text-gray-600">
-                                  {post?.reports?.length}
+                               ) : (
+                                <div className="">
+                                  <FaRegFlag
+                                    onClick={() =>
+                                      dispatch(reportPostAction(post?._id))
+                                    }
+                                    className=" h-5 w-5 text-gray-600 cursor-pointer"
+                                  />
                                 </div>
+                              )} */}
+                              {/* <div className="text-gray-600 ">
+                                {post?.reports?.length
+                                  ? post?.reports?.length
+                                  : 0}
                               </div> */}
-
-                               { post?.reports?.includes(userAuth?._id) ? (
-                                  <div className="">
-                                    
-                                    <FaFlag
-                                      // onClick={() =>
-                                      //   dispatch(
-                                      //     toggleAddLikesToPostAction(post?._id)
-                                      //   )
-                                      // }
-                                      className=" h-5 w-5 text-black-600 cursor-pointer"
-                                    />
-                                  </div>
-                                 ) : (
-                                  <div className="">
-                                    <FaRegFlag
-                                      onClick={() =>
-                                        dispatch(
-                                          reportPostAction(post?._id)
-                                        )
-                                      }
-                                      className=" h-5 w-5 text-gray-600 cursor-pointer"
-                                    />
-                                  </div>
-                                  
-                                )}
-                               <div className="text-gray-600 ">
-                                  {post?.reports?.length
-                                    ? post?.reports?.length
-                                    : 0}
-                                </div>
-
-
                             </div>
                           </div>
 
@@ -436,26 +444,6 @@ export default function PostsList() {
             </div>
           </div>
         </div>
-        {/* <div className="bg-gray-900">
-          <div class="skew bg-green-500 skew-bottom mr-for-radius">
-            <svg
-              class="h-8 md:h-12 lg:h-10 w-full text-gray-900"
-              viewBox="0 0 10 10"
-              preserveAspectRatio="none"
-            >
-              <polygon fill="currentColor" points="0 0 10 0 0 10"></polygon>
-            </svg>
-          </div>
-          <div class="skew bg-gray-500  skew-bottom ml-for-radius">
-            <svg
-              class="h-8 bg-gray-500 md:h-12 lg:h-20 w-full text-gray-900"
-              viewBox="0 0 10 10"
-              preserveAspectRatio="none"
-            >
-              <polygon fill="currentColor" points="0 0 10 0 10 10"></polygon>
-            </svg>
-          </div>
-        </div> */}
         <Toaster position="top-center" reverseOrder={false} />
       </section>
     </>
