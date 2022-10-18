@@ -9,6 +9,7 @@ import {
   toggleAddLikesToPostAction,
 } from "../../redux/slices/posts/postSlices";
 import noPosts from "../../img/noPosts.png";
+import noPosts1 from "../../img/noPosts1.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import * as DOMPurify from "dompurify";
@@ -88,7 +89,7 @@ export default function SavedPosts() {
               savedList?.post?.length <= 0 ? (
                 <div className="">
                   <div className=" w-60 lg:w-1/2 px-4   mb-10   justify-center h-20 w-20 ">
-                    <img className="w-full" src={noPosts} alt={noPosts} />
+                    <img className="w-full" src={noPosts1} alt={noPosts} />
                   </div>
                 </div>
               ) : (
@@ -206,7 +207,7 @@ export default function SavedPosts() {
                       {/* Read more */}
                       <div className="mt-5">
                         <Link
-                          to={`/posts/${post?.id}`}
+                         to={`/posts/${post?._id}`}
                           className=" text-gray-500 hover:underline "
                         >
                           Read More..
