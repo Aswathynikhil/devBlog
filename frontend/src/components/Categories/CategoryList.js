@@ -8,11 +8,12 @@ import LoadingComponent from "../../utils/LoadingComponent";
 
 
 const CategoryList = () => {
+  const category = useSelector(state => state?.category);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchAllCategoriesAction());
-  }, [dispatch]);
-  const category = useSelector(state => state?.category);
+    dispatch(fetchAllCategoriesAction(""));
+  }, [dispatch,category]);
+  
   
 
   const { categoryList, loading, appErr, serverErr } = category;

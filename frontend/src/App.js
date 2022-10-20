@@ -31,6 +31,8 @@ import SavedPosts from "./components/Post/SavedPosts";
 import ReportedPost from "./components/Post/ReportedPost";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 
+
+
 function App() {
   return (
     <>
@@ -96,6 +98,7 @@ function App() {
           <Route path="/reset-password/:token" element={<ResetPassword />} />
 
           <Route path="*" element={<PageNotFound />} />
+         
 
           <Route
             path="/profile/:id"

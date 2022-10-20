@@ -57,6 +57,7 @@ export default function PostsList() {
     saved,
     deleted,
     reports,
+   
   } = posts;
   console.log(postLists, "bbbbbbbbbbbb");
 
@@ -131,7 +132,9 @@ export default function PostsList() {
                   className="block w-96 px-4 py-2 text-black-700 bg-white border rounded-md focus:border-gray-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Search..."
                 />
-                <button className="px-4 text-white bg-black hover:bg-gray-500  border-l rounded ">
+                <button className="px-4 text-white bg-black hover:bg-gray-500  border-l rounded "
+                //  onClick={() => dispatch(searchPostAction(""))}
+                >
                   Search
                 </button>
               </div>
@@ -155,9 +158,9 @@ export default function PostsList() {
                 </button>
               </div>
             </div>
-            <div class="flex flex-wrap -mx-3">
-              <div class="mb-8 lg:mb-0 w-full lg:w-1/4 px-3">
-                <div class="py-4 px-6 bg-gray-300  shadow-md shadow-gray-500 rounded">
+            <div class="flex flex-wrap -mx-3 ">
+              <div class="mb-8 lg:mb-0 w-full lg:w-1/4 px-3 ">
+                <div class="py-4 px-6 bg-gray-300  shadow-md shadow-gray-500 rounded ">
                   <h4 class="mb-4 text-black-500 font-bold font-serif uppercase">
                     Categories
                   </h4>
@@ -215,7 +218,7 @@ export default function PostsList() {
                       </div>
                     </div>
                   ) : (
-                    postLists 
+                  postLists 
                       // ?.filter((val) => {
                       //   if (search === "") {
                       //    return val;

@@ -2,7 +2,7 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   BellIcon,
   MenuIcon,
@@ -38,6 +38,12 @@ const AdminNavbar = ({isLogin}) => {
   ];
  //logout
  const dispatch = useDispatch();
+
+ const navLinkStyles = ({ isActive,item }) => {		
+  return (
+      isActive?('bg-gray-700 text-white font-semibold px-3 py-2 rounded-md text-md font-medium'):('text-black hover:bg-gray-700 hover:text-white font-semibold px-3 py-2 rounded-md text-md font-medium')							
+  )
+}
   return (
     <Disclosure as="nav" className="bg-white shadow-md shadow-gray-300 sticky top-0 z-50">
       {({ open }) => (
@@ -212,13 +218,25 @@ const AdminNavbar = ({isLogin}) => {
               </div>
               <div className="mt-3 px-2 space-y-1 sm:px-3">
                 {userNavigation.map(item => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-white hover:bg-gray-700"
-                  >
-                    {item.name}
-                  </a>
+                  // <a
+                  //   key={item.name}
+                  //   href={item.href}
+                  //   className="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-white hover:bg-gray-700"
+                  // >
+                  //   {item.name}
+                  // </a>
+                  <NavLink
+                  key={item.name}
+                  to={item.href}
+                  className={navLinkStyles}
+                  aria-current={
+                    item.current
+                      ? 'page'
+                      : undefined
+                  }
+                >
+                  {item.name}
+                </NavLink>
                 ))}
               </div>
             </div>

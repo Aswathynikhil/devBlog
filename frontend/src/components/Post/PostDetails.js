@@ -1,10 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as DOMPurify from "dompurify";
+import Modal from "react-modal";
 // import { toast } from "react-toastify";
 
 import { Link, useParams, useNavigate, Navigate } from "react-router-dom";
 import { PencilAltIcon, TrashIcon } from "@heroicons/react/solid";
+
+import {
+  FacebookShareButton,
+  LinkedinShareButton,
+  TelegramShareButton,
+  WhatsappShareButton,
+  FacebookIcon,
+  LinkedinIcon,
+  TelegramIcon,
+  WhatsappIcon,
+} from "react-share";
+
 import {
   deletePostAction,
   deleteSavedPostAction,
@@ -21,8 +34,24 @@ import CommentsList from "../Comments/CommentsList";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import alert css
 import { FaRegBookmark, FaBookmark, FaFlag, FaRegFlag } from "react-icons/fa";
+import { FiShare2 } from "react-icons/fi";
+import {AiOutlineCloseCircle} from "react-icons/ai";
+
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    padding: '3%',
+  },
+};
 
 const PostDetails = () => {
+  const [modalIsOpen,setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -71,7 +100,14 @@ const PostDetails = () => {
       ],
     });
   }
-
+  const shareUrl = `http://localhost:3000/posts/${postDetails?._id}`;
+    
+  function openModal() {
+    setModalIsOpen(true);
+  }
+  function closeModal() {
+    setModalIsOpen(false);
+  }
   useEffect(() => {
     dispatch(fetchSinglePostDetailsAction(id));
     dispatch(fetchSavedPostAction(""));
@@ -104,7 +140,7 @@ const PostDetails = () => {
           {appErr} {serverErr}
         </h1>
       ) : (
-        <section class="py-20 2xl:py-40 bg-gray-200 overflow-hidden">
+        <section className="py-20 2xl:py-40 bg-gray-200 overflow-hidden">
           <div className="container px-4 mx-auto">
             {/* Post Image */}
             <img
@@ -150,7 +186,7 @@ const PostDetails = () => {
                   {/* Show delete and update btn if created by the login user */}
                   {isCreatedBy ? (
                     <p className="flex justify-center">
-                      <Link to={`/update-post/${postDetails?._id}`} class="p-3">
+                      <Link to={`/update-post/${postDetails?._id}`} className="p-3">
                         <PencilAltIcon className="h-7 mt-3 text-black " />
                       </Link>
                       <button
@@ -158,10 +194,56 @@ const PostDetails = () => {
                         //   dispatch(deletePostAction(postDetails?._id))
                         // }
                         onClick={() => confirmDelete(postDetails?._id)}
-                        class="ml-3"
+                        className="ml-3"
                       >
-                        <TrashIcon class="h-8 mt-3 text-black-600 " />
+                        <TrashIcon className="h-8 mt-3 text-black-600 " />
                       </button>
+                      {/* <Link to={`/share-post/${postDetails._id}`}>
+                      
+                        <FiShare2  className="ml-4 h-8 mt-3 text-black-600 "/>
+                      </Link> */}
+                     <div>
+                      <button onClick={openModal}>
+                        <FiShare2 className="ml-4 h-8 mt-6 text-black-600 " />
+                      </button>
+
+                      <Modal 
+                      isOpen = {modalIsOpen}
+                      style={customStyles}
+                      >
+                        <h1 className="mb-4 font-serif text-blue-500">Share this Blog In</h1>
+
+                        <FacebookShareButton className="mr-5"
+                          url={shareUrl}
+                        >
+                          <FacebookIcon size={40} round={true} />
+                        </FacebookShareButton>
+
+                        <WhatsappShareButton className="mr-5"
+                          url={shareUrl}
+                         
+                        >
+                          <WhatsappIcon size={40} round={true} />
+                        </WhatsappShareButton>
+                        <TelegramShareButton className="mr-5"
+                          url={shareUrl}
+                          
+                        >
+                          <TelegramIcon size={40} round={true} />
+                        </TelegramShareButton>
+
+                        <LinkedinShareButton className=""
+                          url={shareUrl}
+                        
+                        >
+                          <LinkedinIcon size={40} round={true} />
+                        </LinkedinShareButton>
+                        <button  onClick={closeModal}>
+                          <AiOutlineCloseCircle className="ml-10 item-center "/>
+                        </button>
+                      </Modal>
+                      </div>
+              
                     </p>
                   ) : (
                     <div className="flex justify-center p-5">
@@ -173,58 +255,103 @@ const PostDetails = () => {
                             postDetails?._id.toString()
                         ) ? (
                           <>
-                          <FaBookmark
-                            onClick={() => {
-                              tostAlert(
-                                `${postDetails?.title} unsaved successfully`
-                              );
-                              dispatch(deleteSavedPostAction(postDetails?._id));
-                            }}
-                            className=" h-5 w-5 text-blue-600 cursor-pointer"
-                          /><p className="text-xs">Unsave</p></>
+                            <FaBookmark
+                              onClick={() => {
+                                tostAlert(
+                                  `${postDetails?.title} unsaved successfully`
+                                );
+                                dispatch(
+                                  deleteSavedPostAction(postDetails?._id)
+                                );
+                              }}
+                              className=" h-5 w-5 text-blue-600 cursor-pointer"
+                            />
+                            <p className="text-xs">Unsave</p>
+                          </>
                         ) : (
-                        <>
-                          <FaRegBookmark
-                            onClick={() => {
-                              tostAlert(
-                                `${postDetails?.title} saved successfully`
-                              );
-                              dispatch(savedPostAction(postDetails?._id));
-                            }}
-                            className=" h-5 w-5 text-black-900 cursor-pointer"
-                          /><p className="text-xs">Save</p></>
+                          <>
+                            <FaRegBookmark
+                              onClick={() => {
+                                tostAlert(
+                                  `${postDetails?.title} saved successfully`
+                                );
+                                dispatch(savedPostAction(postDetails?._id));
+                              }}
+                              className=" h-5 w-5 text-black-900 cursor-pointer"
+                            />
+                            <p className="text-xs">Save</p>
+                          </>
                         )}
                       </div>
-                       <div className="ml-3">
-                      {postDetails?.reports?.includes(userAuth?._id) ? (
-                        <div className="">
-                          <FaFlag className=" h-6 w-6 text-black-900 cursor-pointer" />
-                        </div>
-                      ) : (
-                        <div className="flex">
-                        <div className="flex-1">
-                          <FaRegFlag
-                            onClick={() =>
-                              dispatch(reportPostAction(postDetails?._id))
-                            }
-                            className=" mt-4 h-6 w-6 text-black-900 cursor-pointer"
-                          /><p className="text-xs">Report</p>
-                          
-                        </div>
-                        <div className="p-2 text-gray-600 flex-1 ">
-                        {postDetails?.reports?.length
-                          ? postDetails?.reports?.length
-                          : 0}
+                      <div className="ml-3">
+                        {postDetails?.reports?.includes(userAuth?._id) ? (
+                          <div className="">
+                            <FaFlag className=" h-6 w-6 text-black-900 cursor-pointer" />
+                          </div>
+                        ) : (
+                          <div className="flex">
+                            <div className="flex-1">
+                              <FaRegFlag
+                                onClick={() =>
+                                  dispatch(reportPostAction(postDetails?._id))
+                                }
+                                className=" mt-4 h-6 w-6 text-black-900 cursor-pointer"
+                              />
+                              <p className="text-xs">Report</p>
+                            </div>
+                            <div className="p-2 text-gray-600 flex-1 ">
+                              {postDetails?.reports?.length
+                                ? postDetails?.reports?.length
+                                : 0}
+                            </div>
+                          </div>
+                        )}
                       </div>
-                      </div>
-                      )
-                      }
+                      <div>
+                      <button onClick={openModal}>
+                        <FiShare2 className="ml-4 h-8 mt-5 text-black-600 " />
+                      </button>
+
+                      <Modal 
+                      isOpen = {modalIsOpen}
+                      style={customStyles}
+                      >
+                        <h1 className="mb-4 font-serif text-blue-500">Share this Blog In</h1>
+
+                        <FacebookShareButton className="mr-5"
+                          url={shareUrl}
                       
+                        >
+                          <FacebookIcon size={40} round={true} />
+                        </FacebookShareButton>
+
+                        <WhatsappShareButton className="mr-5"
+                          url={shareUrl}
+                      
+                        >
+                          <WhatsappIcon size={40} round={true} />
+                        </WhatsappShareButton>
+                        <TelegramShareButton className="mr-5"
+                          url={shareUrl}
+                       
+                        >
+                          <TelegramIcon size={40} round={true} />
+                        </TelegramShareButton>
+
+                        <LinkedinShareButton className=""
+                          url={shareUrl}
                     
+                        >
+                          <LinkedinIcon size={40} round={true} />
+                        </LinkedinShareButton>
+                        <button  onClick={closeModal}>
+                          <AiOutlineCloseCircle className="ml-10 item-center "/>
+                        </button>
+                      </Modal>
+                      </div>
+
                     </div>
-                  </div>
-                  )
-                  }
+                  )}
                 </p>
               </div>
             </div>
@@ -237,8 +364,12 @@ const PostDetails = () => {
           <Toaster position="top-center" reverseOrder={false} />
         </section>
       )}
+
+      
     </>
+    
   );
+  
 };
 
 export default PostDetails;
