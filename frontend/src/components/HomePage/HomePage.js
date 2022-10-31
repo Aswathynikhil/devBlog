@@ -7,7 +7,7 @@ const Homepage = () => {
   return (
     <>
      <section className="min-h-screen bg-white overflow-hidden ">
-        <div className="container px-4 mx-auto max-w-7xl">
+        <div className="container px-4  max-w-7xl">
           <div className="flex flex-wrap items-center -mx-4 mb-10 2xl:mb-14"> 
             <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
               <span className="text-2xl font-bold text-black">

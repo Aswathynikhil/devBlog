@@ -59,7 +59,7 @@ export default function Profile() {
 
   return (
     <>
-      <section className="min-h-screen bg-white">
+      <section className="h-full bg-white">
         <div className=" bg-white ">
           {profileLoading ? (
             <LoadingComponent />
@@ -141,9 +141,6 @@ export default function Profile() {
                                 </p>
                                 <p className="text-blue-600 mt-2 mb-2">
                                   {profile?.posts.length} Posts{" "}
-                                  {/* {profile?.followers.length} 
-                                
-                                followers{" "} */}
                                   <button
                                     onClick={() => {
                                       setData(profile?.followers);
@@ -152,17 +149,17 @@ export default function Profile() {
                                     }}
                                     className="cursor-pointer  text-blue-600 mt-2 mb-2 py-1    "
                                   >
-                                    {profile?.followers?.length} Followers
+                                  { profile?.followers?.length} Followers
                                   </button>
-                                  <button
+                                  <button 
                                     onClick={() => {
                                       setData(profile?.following);
                                       setDisplayData("Following Users");
                                       setNumber(profile?.following?.length);
                                     }}
-                                    className="cursor-pointer  text-blue-600 mt-2 mb-2 py-1     "
+                                    className="cursor-pointer  text-blue-600 mt-2 mb-2 py-1 ml-3    "
                                   >
-                                    {profile?.following?.length} Following
+                                     {profile?.following?.length} Following
                                   </button>
                                 </p>
                                 {/* Who view my profile */}
