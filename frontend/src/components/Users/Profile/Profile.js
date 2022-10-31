@@ -77,10 +77,9 @@ export default function Profile() {
                     <article>
                       {/* Profile header */}
                       <div>
-                        <div className="h-full w-full">
+                        <div className="">
                           <img
-                            className="
-                           object-cover lg:h-48"
+                            className="h-96 w-full object-cover lg:h-48"
                             src={profile?.coverPhoto}
                             alt={profile?.firstname}
                           />

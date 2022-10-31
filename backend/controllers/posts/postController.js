@@ -29,6 +29,10 @@ const createPostController = expressAsyncHandler(async (req, res) => {
     );
   }
 
+  if(!req?.user?.isAccountVerified){
+    throw new Error('Please verify Your Account And Go...')
+  }
+
   //prevent user if his account is a starter account
   if (
     req?.user?.accountType === "Starter Account" &&
