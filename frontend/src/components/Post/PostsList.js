@@ -120,10 +120,10 @@ export default function PostsList() {
   return (
     <>
       <section>
-        <div class="py-20 bg-gray-200 min-h-screen radius-for-skewed ">
+        <div class="py-20 bg-gray-200 min-h-screen radius-for-skewed p-10 ">
           <div class="container mx-auto px-4 ">
-            <div className="flex justify-center  ">
-              <div className="flex border border-gray-300 rounded">
+            <div className="mb-4 justify-center ">
+              <div className="flex  rounded justify-center">
                 <input
                   // onChange={(event) => {
                   //   setQuery(event.target.value.toLowerCase());
@@ -135,38 +135,44 @@ export default function PostsList() {
                   className="block w-96 px-4 py-2 text-black-700 bg-white border rounded-md focus:border-gray-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                   placeholder="Search..."
                 />
-                <button className="px-4 text-white bg-black hover:bg-gray-500  border-l rounded "
+                {/* <button className="px-4 text-white bg-black hover:bg-gray-500  border-l rounded "
                 //  onClick={() => dispatch(searchPostAction(""))}
                 >
                   Search
-                </button>
+                </button> */}
               </div>
             </div>
-            <div class="mb-20 flex flex-wrap items-center">
-              <div class="w-full lg:w-1/2  ">
-                <span class="text-black-600 font-bold font-serif text-blue-400">
+            <div class="mb-20 flex flex-wrap">
+              <div class="w-full lg:w-1/2 ">
+                <span class="text-black-600 font-bold font-serif text-blue-400 ">
                   Latest Posts from our awesome authors
                 </span>
                 <h2 class="text-4xl text-black-300 lg:text-5xl font-bold font-serif font-heading">
                   Latest Post
                 </h2>
               </div>
-              <div class=" block text-right w-1/2 p-2">
+              {/* <div class=" block text-right w-1/2 p-2"> */}
                 {/* View All */}
-                <button
+                {/* <button
                   onClick={() => dispatch(fetchAllPostAction(""))}
                   class=" ml-4 inline-block py-2 px-6 rounded-l-xl rounded-t-xl bg-black hover:bg-gray-700 text-gray-50 font-bold leading-loose transition duration-200"
                 >
                   All Posts
-                </button>
-              </div>
+                </button> */}
+              {/* </div> */}
             </div>
             <div class="flex flex-wrap -mx-3 ">
               <div class="mb-8 lg:mb-0 w-full lg:w-1/4 px-3 ">
-                <div class="py-4 px-6 bg-gray-300  shadow-md shadow-gray-500 rounded ">
+                <div class="py-4 px-6 bg-gray-300  shadow-md shadow-gray-500 rounded position:sticky ">
+                
                   <h4 class="mb-4 text-black-500 font-bold font-serif uppercase">
                     Categories
                   </h4>
+                  <button  onClick={() => dispatch(fetchAllPostAction(""))}
+                  className="block cursor-pointer py-2 px-3 mb-4 rounded shadow-md shadow-gray-500 text-black-500 font-bold font-serif bg-white w-full">
+
+                    All Posts
+                  </button>
                   <ul>
                     {catLoading ? (
                       <LoadingComponent />
@@ -184,7 +190,7 @@ export default function PostsList() {
                             onClick={() =>
                               dispatch(fetchAllPostAction(category?.title))
                             }
-                            className="block cursor-pointer py-2 px-3 mb-4 rounded shadow-md shadow-gray-500 text-black-500 font-bold font-serif bg-white"
+                            className="block cursor-pointer py-2 px-3 mb-4 rounded shadow-md shadow-gray-500 text-black-500 font-bold font-serif bg-white text-center"
                           >
                             {category?.title}
                           </p>
