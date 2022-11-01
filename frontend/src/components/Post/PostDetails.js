@@ -287,6 +287,7 @@ const PostDetails = () => {
                         {postDetails?.reports?.includes(userAuth?._id) ? (
                           <div className="">
                             <FaFlag className="mt-4 h-6 w-6 text-black-900 cursor-pointer" />
+                            <p className="text-xs">Report- { postDetails?.reports?.length}</p> 
                           </div>
                         ) : (
                           <div className="flex">
@@ -297,13 +298,14 @@ const PostDetails = () => {
                                 }
                                 className=" mt-4 h-6 w-6 text-black-900 cursor-pointer"
                               />
-                              <p className="text-xs">Report</p>
+                              <p className="text-xs">Report- { postDetails?.reports?.length}</p>   
+                              {/* <p className="text-xs">Report</p> */}
                             </div>
-                            <div className="p-2 text-gray-600 flex-1 ">
+                            {/* <div className="p-2 text-gray-600 flex-1 ">
                               {postDetails?.reports?.length
                                 ? postDetails?.reports?.length
                                 : 0}
-                            </div>
+                            </div> */}
                           </div>
                         )}
                       </div>
