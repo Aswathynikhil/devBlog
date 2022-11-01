@@ -286,7 +286,7 @@ const PostDetails = () => {
                       <div className="ml-3">
                         {postDetails?.reports?.includes(userAuth?._id) ? (
                           <div className="">
-                            <FaFlag className=" h-6 w-6 text-black-900 cursor-pointer" />
+                            <FaFlag className="mt-4 h-6 w-6 text-black-900 cursor-pointer" />
                           </div>
                         ) : (
                           <div className="flex">
